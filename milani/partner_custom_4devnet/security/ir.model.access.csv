@@ -1,0 +1,31 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_company_type group_manager,company_type group_manager,model_company_type,base.group_partner_manager,1,1,1,1
+access_partner_brand group_manager,partner_brand group_manager,model_partner_brand,base.group_partner_manager,1,1,1,1
+access_province_province group_manager,province_province group_manager,model_province_province,base.group_partner_manager,1,1,1,1
+access_district_district group_manager,district_district group_manager,model_district_district,base.group_partner_manager,1,1,1,1
+access_city_city group_manager,city_city group_manager,model_city_city,base.group_partner_manager,1,1,1,1
+access_company_type group_manager,company_type group_system,model_company_type,base.group_user,1,1,1,1
+access_partner_brand group_manager,partner_brand group_system,model_partner_brand,base.group_user,1,1,1,1
+access_province_province group_manager,province_province group_system,model_province_province,base.group_user,1,1,1,1
+access_district_district group_manager,district_district group_system,model_district_district,base.group_user,1,1,1,1
+access_city_city group_manager,city_city group_system,model_city_city,base.group_user,1,1,1,1
+access_company_type group_manager,company_type group_erp_manager,model_company_type,group_erp_manager,1,1,1,1
+access_partner_brand group_manager,partner_brand group_erp_manager,model_partner_brand,group_erp_manager,1,1,1,1
+access_province_province group_manager,province_province group_erp_manager,model_province_province,group_erp_manager,1,1,1,1
+access_district_district group_manager,district_district group_erp_manager,model_district_district,group_erp_manager,1,1,1,1
+access_city_city group_manager,city_city group_erp_manager,model_city_city,group_erp_manager,1,1,1,1
+access_company_type group_manager,company_typegroup_user,model_company_type,group_partner_manager,1,1,1,1
+access_partner_brand group_manager,partner_brand group_user,model_partner_brand,group_partner_manager,1,1,1,1
+access_province_province group_manager,province_province group_user,model_province_province,group_partner_manager,1,1,1,1
+access_district_district group_manager,district_district group_user,model_district_district,group_partner_manager,1,1,1,1
+access_city_city group_manager,city_city group_user,model_city_city,group_partner_manager,1,1,1,1
+access_company_type group_manager,company_type_group_system,model_company_type,group_system,1,1,1,1
+access_partner_brand group_manager,partner_brand_group_system,model_partner_brand,group_system,1,1,1,1
+access_province_province group_manager,province_province_group_system,model_province_province,group_system,1,1,1,1
+access_district_district group_manager,district_district_group_system,model_district_district,group_system,1,1,1,1
+access_city_city group_manager,city_city group_group_system,model_city_city,group_system,1,1,1,1
+access_company_type group_manager,company_type user,model_company_type,group_user,1,0,0,0
+access_partner_brand group_manager,partner_brand user,model_partner_brand,group_user,1,0,0,0
+access_province_province group_manager,province_province user,model_province_province,group_user,1,0,0,0
+access_district_district group_manager,district_district user,model_district_district,group_user,1,0,0,0
+access_city_city group_manager,city_city group user,model_city_city,group_user,1,0,0,0

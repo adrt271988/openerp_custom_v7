@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="send_mail_message_wizard_form">
+            <field name="name">send.mail.message.form</field>
+            <field name="model">send.mail.message</field>
+            <field name="arch" type="xml">
+                <form string="Compose Email" version="7.0">
+                    <group>
+                        <label for="email_to" string="Recipient" />
+                        <div groups="base.group_user">
+                            <field name="email_to" placeholder="Add contacts to notify..." />
+                        </div>
+                        <field name="subject" placeholder="Subject..."/>
+                    </group>
+                    <field name="body"/>
+                    <field name="attachment_ids" widget="many2many_binary"/>
+                    <footer>
+                        <button string="Send" name="send_mail" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_send_mail_message_wizard" model="ir.actions.act_window">
+            <field name="name">Compose Email</field>
+            <field name="res_model">send.mail.message</field>
+            <field name="src_model">send.mail.message</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

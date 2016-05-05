@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="purchase_order_form_milani" model="ir.ui.view">
+            <field name="name">purchase.order.form.milani</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+               <tree string="Purchase Order Lines" position="replace">
+    			 	<tree string="Purchase Order Lines">
+                      	<field name="category_id"/>    
+						<field name="product_id" on_change="onchange_product_id(parent.pricelist_id,product_id,0,product_uom,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,price_unit,context)"  domain="[('categ_id','=',category_id)]" context="{'default_categ_id': category_id}"/>
+                        <field name="name"/>
+                        <field name="date_planned"/>
+                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                        <field name="account_analytic_id" groups="purchase.group_analytic_accounting" domain="[('type','not in',('view','template'))]"/>
+                        <field name="product_qty" on_change="onchange_product_id(parent.pricelist_id,product_id,product_qty,product_uom,parent.partner_id,parent.date_order,parent.fiscal_position,date_planned,name,price_unit,context)"/>
+                        <field name="product_uom" groups="product.group_uom" on_change="onchange_product_uom(parent.pricelist_id,product_id,product_qty,product_uom,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,price_unit,context)"/>
+                        <field name="price_unit"/>
+                        <field name="taxes_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','!=','sale')]"/>
+                        <field name="price_subtotal"/>
+                    </tree>   			
+    			</tree>    		
+		    </field>
+        </record>
+     	<record id="purchase_order_line_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.line.form.inherit</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_form"/>
+			<field name="arch" type="xml">
+				<field name="product_id" position="before">
+					<field name="category_id"/>
+				</field>		
+             	<xpath expr="//notebook/page[@string='Notes']" position="before">
+             	 	<page string="Other Info.">
+             	 	     <group>
+             	 	      	<group>
+             	 	      		<field name="sport"/>
+		       	 	      		<field name="spcl_tech"/>   
+       	 						<field name="material"/>
+       	 						<field name="material_desc"/>  
+								<field name="series"/> 
+								<field name="model"/>      		      	
+             	 	      	</group>
+             	 	      	<group>
+             	 	     		<field name="activity_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>   
+								<field name="type_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>  
+								<field name="specialty_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>   
+								<field name="brand_id"/>   
+								<field name="wheel_size_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>   
+								<field name="size_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="discipline_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>   
+							</group>            	 	     
+             	 	     </group>      	  	
+						<group>
+							<group> 
+								<field name="color_id"/> 
+								<field name="design_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="seat_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="bar_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="rake_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/> 
+								<field name="width_oo_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							</group>
+							<group>
+								<field name="width_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="taxle_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>	
+								<field name="brakes_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="head_tube_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="ussize_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+								<field name="manufacturer_id"/>  					
+							</group>																			
+						</group>
+             	 	</page>            	
+             	</xpath>           
+			</field>
+		</record>
+		 <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//notebook/page[@string='Order Lines']/field[@name='order_line']/form/group/group/field[@name='product_id']" position="before">
+            		<field name="category_id"/>	
+            	</xpath>
+            	<tree string="Sales Order Lines" position="replace">
+            		<tree string="Sales Order Lines" >
+                    	<field name="sequence" widget="handle"/>
+                        <field name="state" invisible="1"/>
+                        <field name="th_weight" invisible="1"/>
+                        <field name="category_id"/>	
+                        <field name="product_id"
+                            context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}"
+                            groups="base.group_user" 
+                            on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, True, parent.date_order, False, parent.fiscal_position, False, context)"/>
+                        <field name="name"/>
+                        <field name="product_uom_qty"
+                            context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}"
+                            on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)"/>
+                        <field name="product_uom"
+                            on_change="product_uom_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, context)"
+                            groups="product.group_uom" options='{"no_open": True}'/>
+                        <field name="product_uos_qty" groups="product.group_uos" invisible="1"/>
+                        <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1"/>
+                        <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+                        <field name="price_unit"/>
+                        <field name="discount" groups="sale.group_discount_per_so_line"/>
+                        <field name="price_subtotal"/>
+                 	</tree>
+                 </tree>
+                 <xpath expr="//notebook/page[@string='Order Lines']/field[@name='order_line']/form/group" position="after">
+            		<group>
+						<group>
+							<field name="sport"/>
+							<field name="spcl_tech"/>
+							<field name="material"/>
+							<field name="material_desc"/>
+							<field name="series"/>
+							<field name="model"/>
+						</group>
+						<group>
+							<field name="activity_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="type_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="specialty_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="brand_id"/>
+							<field name="wheel_size_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="size_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="discipline_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+						</group>
+					</group>
+					<group>
+						<group>
+							<field name="color_id"/>
+							<field name="design_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="seat_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="bar_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="rake_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="width_oo_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+						</group>
+						<group>
+							<field name="width_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="taxle_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="brakes_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="head_tube_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="ussize_id" domain="[('category_id','=',category_id)]" context="{'default_category_id': category_id}"/>
+							<field name="manufacturer_id"/>
+						</group>
+					</group>
+            	</xpath>
+            </field>
+       	</record>
+	</data>
+</openerp>

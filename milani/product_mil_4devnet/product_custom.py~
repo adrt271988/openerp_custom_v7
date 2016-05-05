@@ -1,0 +1,193 @@
+# -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
+import time
+import pytz
+from openerp import SUPERUSER_ID
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+from openerp.osv import fields, osv
+from openerp import netsvc
+from openerp import pooler
+from openerp.tools.translate import _
+import datetime  
+
+class color_master(osv.osv):    
+    _name = 'color.master'
+    _columns = {
+                 'name':fields.char('Name'),
+                }
+class design_master(osv.osv):    
+    _name = 'design.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class seat_post_diameter_master(osv.osv):    
+    _name = 'seat.post.diameter.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class bar_bore_diameter_master(osv.osv):    
+    _name = 'bar.bore.diameter.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }    
+
+class rake_master(osv.osv):    
+    _name = 'rake.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class width_oo_master(osv.osv):    
+    _name = 'width.oo.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class t_axle_master(osv.osv):    
+    _name = 'taxle.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.boolean('Name'),
+                }
+class brakes_master(osv.osv):    
+    _name = 'brakes.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class head_tube_master(osv.osv):    
+    _name = 'head.tube.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class width_master(osv.osv):    
+    _name = 'width.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class ussize_master(osv.osv):    
+    _name = 'ussize.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class manufacturer_master(osv.osv):    
+    _name = 'manufacturer.master'
+    _columns = {                 
+                 'name':fields.char('Name'),
+                }  
+
+class product_product(osv.osv):
+    
+    _inherit = 'product.product'
+    _columns = {     
+                    'brand_id':fields.many2one('partner.brand','Brand'),
+                    'series':fields.char('Series'), 
+                    'model':fields.char('Model'),
+                    'spec1':fields.char('Spec.1'), 
+                    'spec2':fields.char('Spec.2'), 
+                    'spec3':fields.char('Spec.3'), 
+                    'spec4':fields.char('Spec.4'), 
+                    'spec5':fields.char('Spec.5'), 
+                    'spec6':fields.char('Spec.6'), 
+                    'spec7':fields.char('Spec.7'), 
+                    'spec8':fields.char('Spec.8'), 
+                    'spec9':fields.char('Spec.9'), 
+                    'spec10':fields.char('Spec.10'), 
+                    'spec11':fields.char('Spec.11'),        
+                    "activity_id" : fields.many2one('activity.master','Activity'),                   
+                    "type_id" :fields.many2one('type.master','Type'),   
+                    "specialty_id":fields.many2one('specialty.master','Specialty'),
+                    "wheel_size_id":fields.many2one('wheel.size.master','Wheel-size'),
+                    "size_id":fields.many2one('size.master','Size'),
+                    "discipline_id" :fields.many2one('discipline.master','Discipline'),
+                    'sport':fields.char('Sport'),
+                    'spcl_tech':fields.char('Special Technology'),
+                    'material_desc':fields.char('Material Desc.'),
+                    'material':fields.char('Material'), 
+                    'color_id':fields.many2one('color.master','Color'),                 
+                    'design_id':fields.many2one('design.master','Design'),
+                    'seat_id':fields.many2one('seat.post.diameter.master','Seat-Post-Diameter'),
+                    'bar_id':fields.many2one('bar.bore.diameter.master','Bar-Bore-Diameter'),
+                   # 'rake_id':fields.many2one('rake.master','Rake'),
+                    'width_oo_id':fields.many2one('width.oo.master','Width OO'),
+                    'taxle_id':fields.many2one('taxle.master','T-axle'),
+                    'brakes_id':fields.many2one('brakes.master','Brakes'),
+                    'head_tube_id':fields.many2one('head.tube.master','Head-Tube'),
+                    'width_id':fields.many2one('width.master','Width'),
+                    'ussize_id':fields.many2one('ussize.master','US-size'),
+                    'manufacturer_id':fields.many2one('manufacturer.master','Manufacturer'),
+                }
+    def categ_id_change(self, cr, uid, ids, categ_id,context):
+        if categ_id:
+            value={}            
+            val = {
+                   'activity_id':'',
+                   'series':'',
+                   'type_id':'',
+                   'model':'',
+                   'specialty_id':'',
+                   'wheel_size_id':'',
+                   'size_id':'',
+                   'discipline_id':'',
+                   'brand_id':'',
+                   'spec1':'',
+                   'spec2':'',
+                   'spec3':'',
+                   'spec4':'',
+                   'spec5':'',
+                   'spec6':'',
+                   'spec7':'',
+                   'spec8':'',
+                   'spec9':'',
+                   'spec10':'',
+                   'spec11':'',
+                   }
+        return {'value': val}
+        
+    
+class activity_master(osv.osv):    
+    _name = 'activity.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class type_master(osv.osv):    
+    _name = 'type.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),   
+                 'name':fields.char('Name'),
+                }
+class specialty_master(osv.osv):    
+    _name = 'specialty.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }
+class wheel_size_master(osv.osv):    
+    _name = 'wheel.size.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                }    
+class size_master(osv.osv):    
+    _name = 'size.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'),
+                 'name':fields.char('Name'),
+                } 
+class discipline_master(osv.osv):    
+    _name = 'discipline.master'
+    _columns = {
+                 'category_id':fields.many2one('product.category','Category'), 
+                 'name':fields.char('Name'),
+                }
+                
+       

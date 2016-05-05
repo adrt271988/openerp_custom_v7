@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+<!-- George Vincent's customization -->
+    <record id="view_res_partner_tree" model="ir.ui.view">
+        <field name="name">res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//tree[@string='Contacts']" position="replace">
+        		<tree string="Contacts">
+		           <field name="name"/>
+		           <field name="vat"/>
+		           <field name="street"/>
+	               <field name="city_id"/>
+	               <field name="zip"/>
+	               <field name="province_id"/>
+	               <field name="state_id"/>
+	               <field name="country_id"/>
+	               <field name="phone"/>
+	               <field name="website"/>
+	               <field name="email"/>
+	               <field name="account_type"/>
+	               
+	               <field name="user_id" invisible="1"/>
+	               <field name="is_company" invisible="1"/>
+	               <field name="parent_id" invisible="1"/>
+	               <field name="account_id" invisible="1" />
+	               <field name="function" invisible="1"/>
+	            </tree>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="view_attachment_form_inherited" model="ir.ui.view">
+            <field name="model">ir.attachment</field>
+            <field name="name">ir.attachment</field>
+            <field name="inherit_id" ref="base.view_attachment_form"/>
+            <field name="arch" type="xml">
+	            <xpath expr="//form[@string='Attachments']" position="replace">
+	                <form string="Attachments" version="7.0">
+	                   <sheet>
+	                    <label for="name" class="oe_edit_only"/>
+	                    <h1>
+	                        <field name="name"/>
+	                    </h1>
+	                    <group>
+	                        <group string="Data">
+	                            <field name="type"/>
+	                            <field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}"/>
+	                            <field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
+	                            <field name="url" widget="url" attrs="{'invisible':[('type','=','binary')]}"/>
+	                        </group>
+	                        <group string="Attached To" invisible="1">
+	                            <field name="res_model"/>
+	                            <field name="res_id"/>
+	                            <field name="res_name"/>
+	                            <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+	                        </group>
+	                        <group groups="base.group_no_one" invisible="1" string="History">
+	                            <label for="create_uid" string="Creation"/>
+	                            <div name="creation_div">
+	                                <field name="create_uid" readonly="1" class="oe_inline"/> on 
+	                                <field name="create_date" readonly="1" class="oe_inline"/>
+	                            </div>
+	                        </group>
+	                        <group name="description_group" string="Description" colspan="4">
+	                            <field name="description" nolabel="1"/>
+	                        </group>
+	                    </group>
+	                  </sheet>
+	                </form>
+                </xpath>
+            </field>
+        </record>
+       
+    <record id="view_res_partner_filter_assign_tree_inherite" model="ir.ui.view">
+        <field name="name">res.partner.geo.inherit.tree</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="crm_partner_assign.view_res_partner_filter_assign_tree"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='date_review_next']" position="replace" />
+        	<xpath expr="//field[@name='grade_id']" position="replace" />
+        	<xpath expr="//field[@name='activation']" position="replace" />
+        </field>
+    </record>
+    
+    
+		<record id="view_partner_property_form_inherit" model="ir.ui.view">
+			<field name="name">res.partner.property.form.inherit.4devnet</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="account.view_partner_property_form"/>
+			<field name="arch" type="xml">
+				<field name="parent_id" position="after">
+					<field name="account_id" class="oe_inline" readonly="1" style="color:black;font-size:14pt;width:28%%;" placeholder="Account ID"/>
+					<field name="vat" style="width: 20%%;text-align:right;" placeholder="VAT/Tax ID"/>
+					<field name="fiscal_id" style="width: 25%%;text-align:right;" placeholder="Fiscal ID"/>
+					<field name="entitytype" style="width: 25%%;text-align:right;" placeholder="Entity Type"/>				
+				</field>
+			</field>
+		</record>
+		
+
+		<record model="ir.ui.view" id="res_partner_view_buttons_inherited">
+            <field name="name">res.partner.view.buttons</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="crm.res_partner_view_buttons_1" />
+            <field name="priority" eval="10"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@string='Meetings']" position="replace"/>
+                <xpath expr="//button[@string='Calls']" position="replace"/>
+                <xpath expr="//button[@string='Opportunities']" position="replace"/>
+            </field>
+        </record>
+        
+        <record id="view_res_partner_filter_inherited" model="ir.ui.view">
+            <field name="name">res.partner.select</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter" />
+            <field name="arch" type="xml">
+            	<xpath expr="//search[@string='Search Partner']" position="replace">
+	            	<search string="Search Partner">
+	            	   <separator />
+	                   <field name="name" filter_domain="['|','|',('name','ilike',self),('parent_id','ilike',self),('ref','=',self)]"/>
+	                   <field string="Account ID" name="account_id" filter_domain="[('account_id','ilike',self)]" />
+	                   <field string="Key Contact" name="account_id" filter_domain="[('child_ids','ilike',self)]" />
+	                   <field string="VAT/Tax ID" name="vat" filter_domain="[('vat','ilike',self)]" />
+	                   <field string="Fiscal ID" name="fiscal_id" filter_domain="[('fiscal_id','ilike',self)]" />
+	                   <separator/>
+	                   <field string="Mobile" name="mobile" filter_domain="[('mobile','ilike',self)]" />
+	                   <field string="Phone" name="phone" filter_domain="[('phone','ilike',self)]" />
+	                   <field string="Fax" name="fax" filter_domain="[('fax','ilike',self)]" />
+	                   <field string="Skype" name="skype" filter_domain="[('skype','ilike',self)]" />
+	                   <field string="Website" name="website" filter_domain="[('website','ilike',self)]" />
+	                   <field string="Email" name="email" filter_domain="[('email','ilike',self)]" />
+	                   <field string="Facebook" name="facebook" filter_domain="[('facebook','ilike',self)]" />
+	                   <field string="Linkedin" name="linkedin" filter_domain="[('linkedin','ilike',self)]" />
+	                   <field string="Twitter" name="twitter" filter_domain="[('twitter','ilike',self)]" />
+	                   <field string="Googel +" name="google" filter_domain="[('google','ilike',self)]" />
+						<separator/>
+	                   <field string="Street" name="street" filter_domain="[('street','ilike',self)]" />
+	                   <field string="City" name="city_id" filter_domain="[('city_id','ilike',self)]" />
+	                   <field string="District" name="district_id" filter_domain="[('district_id','ilike',self)]" />
+	                   <field string="Province" name="province_id" filter_domain="[('province_id','ilike',self)]" />
+	                   <field string="State" name="state_id" filter_domain="[('state_id','ilike',self)]" />
+	                   <field string="Zip" name="zip" filter_domain="[('zip','ilike',self)]" />
+	                   <field string="Country" name="country_id" filter_domain="[('country_id','ilike',self)]" />
+	                   <separator/>
+	                   <field string="Brands" name="brands" filter_domain="[('brands','ilike',self)]" />
+	                   <field string="Competitor" name="competitor" filter_domain="[('competitor','ilike',self)]" />
+	                   <separator/>
+	                   <filter string="Business" name="is_company" domain="[('is_company','=',1)]" />
+					   <filter string="Non-profit" name="team_type" domain="[('team_type','=',1)]" />
+					   <filter string="Private" name="private" domain="[('private','=',1)]" />
+	                   <separator/>
+	                   <filter string="Customers" name="customer" domain="[('customer','=',1)]" help="Customer Partners"/>
+	                   <filter string="Suppliers" name="supplier" domain="[('supplier','=',1)]" help="Supplier Partners"/>
+	                   <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
+	                   <separator/>
+	                   <filter help="My Partners" icon="terp-personal+" domain="[('user_id','=',uid)]" invisible="1"/>
+	                   <filter string="Persons" name="type_person" domain="[('type_person','=',0)]" invisible="1"/>
+	                   <filter string="Companies" name="type_company" domain="[('type_company','=',1)]" invisible="1"/>
+	                   <field name="user_id" invisible="1"/>
+	                   <field name="parent_id" domain="[('parent_id','=',1)]" operator="child_of" invisible="1"/>
+	                   <separator />
+	                   <filter string="First Call" name="yet_to_log" domain="[('yet_to_log','=',1)]"/>
+	                   <filter string="Call Again" name="call_again" domain="[('call_again','=',1)]"/>
+	                   <filter string="Logged Call" name="logged_call" domain="[('logged_call','=',1)]"/>
+	                   <filter string="Schedule Call" name="schedule_call" domain="[('schedule_call','=',1)]"/>
+	                   <group expand="0" string="Group By...">
+	                   	   <filter string="Name" context="{'group_by' : 'name'}" />
+	                       <filter string="Street" context="{'group_by': 'street'}"/>
+	                       <filter string="City" context="{'group_by': 'city_id'}"/>
+		               	   <filter string="District" context="{'group_by': 'district_id'}"/>
+		               	   <filter string="Province" context="{'group_by': 'province_id'}"/>
+		                   <filter string="State" context="{'group_by': 'state_id'}"/>
+	                       <filter string="Country" context="{'group_by': 'country_id'}"/>
+	                       <filter string="Zip" context="{'group_by': 'zip'}"/>
+	                       <separator/>
+	                       <filter string="Salesperson" context="{'group_by' : 'user_id'}" />
+	                       <filter string="Company" context="{'group_by': 'parent_id'}"/>
+	                   </group>
+	               </search>
+	              </xpath>
+            </field>
+        </record>
+        
+        
+		<record id="view_partner_form_inherit_4devnet" model="ir.ui.view">
+			<field name="name">res.partner.form.inherit.4devnet</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form" />
+			<field eval="1" name="priority"/>
+			<field name="arch" type="xml">
+			<xpath expr="//form[@string='Partners']" position="replace">
+               <form string="Partners" version="7.0">
+                    <field name="image" widget='image' class="oe_left oe_avatar" options='{"preview_image": "image_medium", "size": [90, 90]}'/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Name" />
+                            <field name="default_name" invisible="1"/>
+                        </h1>
+                        <field name="parent_id" placeholder="Company" domain="['|',('team_type','=', True),('is_company', '=', True)]" context="{'default_is_company': True, 'default_supplier': supplier, 'default_customer': customer}"  attrs="{'invisible': [('is_company','=', True),('parent_id', '=', False)]}" />
+                        <field name="category_id" widget="many2many_tags" placeholder="Tags..."/>
+                    </div>
+                    <div class="oe_right">
+                    		<field name="account_type" invisible="1"/>
+	                        <field name="is_company"  on_change="onchange_company(is_company)" class="oe_inline"/><label for="is_company" string="Business"/>
+						   	<field name="team_type" on_change="onchange_team_type(team_type)"/><label for="team_type" string="Non-profit"/>
+						   	<field name="private" on_change="onchange_private(private)"/><label for="private" string="Private"/><br/>
+						   	<field name="logoes" widget='image' class="oe_right oe_top oe_avatar"  options='{"size": [110, 90]}'/>	
+							<div class="oe_right oe_button_box" name="buttons">
+								<button type="action" string="Meetings" name="%(base_calendar.action_crm_meeting)d" context="{'search_default_partner_ids': active_id, 'default_partner_ids' : [active_id]}"/>
+			                    <button type="action" string="Calls" name="%(crm.crm_case_categ_phone_incoming0)d" context="{'search_default_partner_id': active_id, 'default_duration': 1.0}" />
+			                    <button type="action" string="Opportunities" name="%(crm.crm_case_category_act_oppor11)d" context="{'search_default_partner_id': active_id}"/>
+							</div>
+                    </div>
+                    <group class="my_style">
+                    	<br/><br/>
+                        <group >
+                        	<field name="parent_id"
+                            placeholder="Company"
+                            domain="[('is_company', '=', True)]" context="{'default_is_company': True}"
+                            invisible="1" />
+                        	 <field name="street2" placeholder="Street..." invisible="1"/>
+                        	 <label for="street" string="Address" />
+                        	 <div class="address_format">
+                        	 	 <field name="street" placeholder="Street..." style="width: 90%%" />
+                        	 </div>
+                        	 <label for="city_id" string="City"/>
+                        	  <div class="address_format">
+	                             <field name="city_id" style="width: 45%%"/>
+	                             <field name="district_id" nolabel="1" placeholder="District"  options='{"no_open": True}' style="width: 45%%"/>
+	                          </div>
+	                          <label for="state_id" string="State/Region"/>
+	                           <div class="address_format">
+			                     <field name="state_id" options='{"no_open": True}' on_change="onchange_state(state_id)"  style="width: 45%%"/>
+			                     <field name="province_id" nolabel="1" placeholder="Province/County" class="oe_no_button" options='{"no_open": True}'  style="width: 45%%"/>
+			                   </div>
+			                  <label for="zip" string="ZIP"/>
+	                           <div class="address_format">
+			                     <field name="zip" nolabel="1"  style="width: 45%%"/>
+		                     	 <field name="country_id" placeholder="Country" nolabel="1" class="oe_no_button" options='{"no_open": True}'  style="width: 45%%"/>
+			           		   </div>
+			           		  <label for="second_address_id" string="Secondary Address"/>
+	                           <div class="address_format"> 
+			           			<field name="second_address_id" style="width: 45%%"/>
+			           			<field name="third_address_id" placeholder="Add another address" style="width: 45%%"/>
+			           		</div>
+                        </group>
+                        <group class="my_style">
+                            <field name="function" placeholder="e.g. Sales Director" invisible="1"/>
+                            <label for="mobile" string="Mobile"/>
+                            <div class="address_format">
+                            	<field name="mobile" style="width: 90%%"/>
+                            </div>
+                            <label for="phone" string="Phone"/>
+                            <div class="address_format">
+                            	<field name="phone" placeholder="e.g. +32.81.81.37.00" style="width: 90%%"/>
+                            </div>
+                            <label for="fax" string="Fax"/>
+                            <div class="address_format">
+                            	<field name="fax" style="width: 90%%"/>
+                            </div>
+                            <label for="skype" string="Skype"/>
+                            <div class="address_format">
+                            	<field name='skype' placeholder="Skype ID" style="width: 90%%"/>
+                            </div>
+                            <label for="email" string="Email"/>
+                            <div class="address_format">
+	                            <field name="email" widget="email" class="oe_inline" style="width: 65%%;font-family: Calibri;"/>
+	                            <button name="%(action_send_mail_message_wizard)d"  class="oe_inline" context='{"default_email_to":email,"active_id":active_id}' icon="terp-mail-message-new" type="action" style="width: 20%%"/>
+                            </div>
+                            <field name="title" domain="[('domain', '=', 'contact')]"   invisible="1" options='{"no_open": True}' attrs="{'invisible': [('is_company','=', True)]}" />
+                        </group>
+                    </group>
+					  <group colspan="1">
+					    <div class="oe_inline">
+					    	<button name="open_map" string="Map" type="object" icon="gtk-zoom-in"/>
+					    	<field name="website"  placeholder="Website" style="width: 15%%" widget="url"/>
+							<field name='google' placeholder="Google+" style="width: 15%%"/>
+							<field name='facebook' placeholder="Facebook ID" style="width: 15%%"/>
+							<field name='linkedin' placeholder="LinkedIn ID" style="width: 15%%"/>
+							<field name='twitter' placeholder="Twitter ID" style="width: 15%%"/>
+							<field name='source' placeholder="Source" style="width: 15%%"/>
+					    </div>
+					  </group>
+                    <notebook colspan="4">
+                	   <page string="Account Profile">
+                	   		<group col="4">
+                        		<group>
+                                                <separator string="Relationship" />
+                                                <separator />
+                                                <!--<separator string="Relationship" attrs="{'invisible':[('team_type','=',False)]}"/>   -->
+                        			<field name="prospect"/>
+			                        <field name="customer"/>
+								    <field name="supplier" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="competitor" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="team" attrs="{'invisible':[('team_type','=',False)]}"/>
+			                        <field name="sponsor" attrs="{'invisible':[('team_type','=',False)]}"/>
+			                        <field name="other"/>
+                        		</group>
+                        		
+							    <group>
+							    	<separator string="Activity" attrs="{'invisible':[('team_type','=',True)]}"/>
+							    	<separator string="Specialty" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        			<field name="retail" attrs="{'invisible':[('team_type','=',True)]}"/>
+                                    <field name="repair_assembly" attrs="{'invisible':[('team_type','=',True)]}"/>
+			                        <field name="import" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="wholesale" attrs="{'invisible':[('team_type','=',True)]}"/>
+                                    <field name="production" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="rent" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="triathlon" attrs="{'invisible':[('team_type','=',False)]}"/>
+								    <field name="road" attrs="{'invisible':[('team_type','=',False)]}"/>
+								    <field name="mtb_speciality" attrs="{'invisible':[('team_type','=',False)]}"/>
+								    <field name="cross_speciality" attrs="{'invisible':[('team_type','=',False)]}"/>
+								    <field name="activity_other"/>
+                        		</group>
+                        		
+								<group>
+								<separator string="Age" attrs="{'invisible':[('team_type','=',False)]}"/>
+							    	<separator string="ProductFocus" attrs="{'invisible':[('team_type','=',True)]}"/>
+                        			<field name="raising" attrs="{'invisible':[('team_type','=',True)]}"/>
+			                        <field name="leisure" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="urban" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="free_style" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="kid"/>
+								    <field name="mass_market" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="electric" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="prod_foc_others" attrs="{'invisible':[('team_type','=',True)]}"/>
+								    <field name="junior" attrs="{'invisible':[('team_type','=',False)]}"/>
+								    <field name="adults" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        		</group>
+                        		
+                        		<group>
+                        			<separator string="Market" attrs="{'invisible':[('is_company','=',False)]}"/>
+                        			<separator string="Type" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        			<field name="market_leader" attrs="{'invisible':[('is_company','=',False)]}"/>
+			                        <field name="second_tier" attrs="{'invisible':[('is_company','=',False)]}"/>
+								    <field name="small_shop" attrs="{'invisible':[('is_company','=',False)]}"/>
+								    <field name="other_market" attrs="{'invisible':[('is_company','=',False)]}"/>
+								                            		
+                        			<field name="recreational" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        			<field name="competitive" string="Competitive" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        			<field name="pro_type" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        			<field name="school_type" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        			<field name="rent" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        			<field name="prod_foc_others" attrs="{'invisible':[('team_type','=',False)]}"/>
+                        		</group>
+                        	</group>
+                	   		<!-- <group col="3" attrs="{'invisible':[('team_type','=',True)]}">
+                        		<group string="Relationship">
+                        			<field name="prospect"/>
+			                        <field name="customer"/>
+								    <field name="supplier"/>
+								    <field name="competitor"/>
+								    <field name="other"/>
+                        		</group>
+                        		<group string="Activity">
+                        			<field name="retail"/>
+                                    <field name="repair_assembly"/>
+			                        <field name="import"/>
+								    <field name="wholesale"/>
+                                    <field name="production"/>
+								    <field name="rent"/>
+								    <field name="activity_other"/>
+                        		</group>
+                        		<group string="Product Focus">
+                        			<field name="raising"/>
+			                        <field name="leisure"/>
+								    <field name="urban"/>
+								    <field name="free_style"/>
+								    <field name="kid"/>
+								    <field name="mass_market"/>
+								    <field name="electric"/>
+								    <field name="prod_foc_others"/>
+                        		</group>
+                        	</group>
+                        	
+                        	<group col="4" attrs="{'invisible':[('team_type','=',False)]}">
+                        		<group string="Relationship">
+                        			<field name="prospect"/>
+			                        <field name="customer"/>
+			                        <field name="team"/>
+			                        <field name="sponsor"/>
+								    <field name="supplier" invisible="1"/>
+								    <field name="competitor"/>
+								    <field name="other"/>
+                        		</group>
+                        		<group string="Specialty">
+                        			<field name="retail"/>
+                                    <field name="repair_assembly"/>
+			                        <field name="import"/>
+								    <field name="wholesale"/>
+                                    <field name="production"/>
+								    <field name="rent"/>
+								    <field name="activity_other"/>
+								    <field name="triathlon"/>
+								    <field name="road"/>
+								    <field name="mtb_speciality"/>
+								    <field name="cross_speciality"/>
+								    <field name="activity_other"/>
+								    
+                        		</group>
+                        		<group string="Age">
+                        			<field name="raising"/>
+			                        <field name="leisure"/>
+								    <field name="urban"/>
+								    <field name="free_style"/>
+								    <field name="kid"/>
+								    <field name="junior"/>
+								    <field name="adults"/>
+								    <field name="mass_market"/>
+								    <field name="electric"/>
+								    <field name="prod_foc_others"/>
+                        		</group>
+                        		<group string="Type">
+                        			<field name="recreational"/>
+                        			<field name="competitor" string="Competitive"/>
+                        			<field name="pro_type"/>
+                        			<field name="school_type"/>
+                        			<field name="rent"/>
+                        			<field name="prod_foc_others"/>
+                        		</group>
+                        	</group> -->
+                        	<group col="3" >
+								<group>
+										<field name='brands'/>
+								</group>
+								<group>
+										<field name='affiliation'/>
+								</group>
+								<group>
+										<field name='team_registration'/>
+								</group>
+						 	</group>
+                        	<group col="4" >
+                        		<group>
+								    	<field name="annual_revenue"/>
+								</group>
+								<group>
+										<field name='number_of_employees' string="Number of Athletes"/>
+								</group>
+								<group>
+										<field name='foundation_year'/>
+								</group>
+						 	</group>
+                        </page>
+                        <page string="Contacts"  autofocus="autofocus">
+                            <field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city_id': city_id, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier, 'default_customer': customer}">
+                                <kanban>
+                                    <field name="color"/>
+                                    <field name="name"/>
+                                    <field name="title"/>
+                                    <field name="email"/>
+                                    <field name="parent_id"/>
+                                    <field name="is_company"/>
+                                    <field name="function"/>
+                                    <field name="phone"/>
+                                    <field name="street"/>
+                                    <field name="street2"/>
+                                    <field name="zip"/>
+                                    <field name="city_id"/>
+                                    <field name="country_id"/>
+                                    <field name="mobile"/>
+                                    <field name="fax"/>
+                                    <field name="state_id"/>
+                                    <field name="has_image"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.color.raw_value)"/>
+                                            <div t-att-class="color + (record.title.raw_value == 1 ? ' oe_kanban_color_alert' : '')" style="position: relative">
+                                                <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
+                                                <div class="oe_module_vignette">
+                                                <a type="open">
+                                                    <t t-if="record.has_image.raw_value === true">
+                                                        <img t-att-src="kanban_image('res.partner', 'image', record.id.value, {'preview_image': 'image_small'})" class="oe_avatar oe_kanban_avatar_smallbox"/>
+                                                    </t>
+                                                    <t t-if="record.image and record.image.raw_value !== false">
+                                                        <img t-att-src="'data:image/png;base64,'+record.image.raw_value" class="oe_avatar oe_kanban_avatar_smallbox"/>
+                                                    </t>
+                                                    <t t-if="record.has_image.raw_value === false and (!record.image or record.image.raw_value === false)">
+                                                        <t t-if="record.is_company.raw_value === true">
+                                                            <img t-att-src='_s + "/base/static/src/img/company_image.png"' class="oe_kanban_image oe_kanban_avatar_smallbox"/>
+                                                        </t>
+                                                        <t t-if="record.is_company.raw_value === false">
+                                                            <img t-att-src='_s + "/base/static/src/img/avatar.png"' class="oe_kanban_image oe_kanban_avatar_smallbox"/>
+                                                        </t>
+                                                    </t>
+                                                </a>
+                                                    <div class="oe_module_desc">
+                                                        <div class="oe_kanban_box_content oe_kanban_color_bglight oe_kanban_color_border">
+                                                            <table class="oe_kanban_table">
+                                                                <tr>
+                                                                    <td class="oe_kanban_title1" align="left" valign="middle">
+                                                                        <h4><a type="open"><field name="name"/></a></h4>
+                                                                        <i><div t-if="record.function.raw_value">
+                                                                            <field name="function"/></div></i>
+                                                                        <div><a t-if="record.email.raw_value" title="Mail" t-att-href="'mailto:'+record.email.value">
+                                                                            <field name="email"/>
+                                                                        </a></div>
+                                                                        <div t-if="record.phone.raw_value">Phone: <field name="phone"/></div>
+                                                                        <div t-if="record.mobile.raw_value">Mobile: <field name="mobile"/></div>
+                                                                        <div t-if="record.fax.raw_value">Fax: <field name="fax"/></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Contact" version="7.0">
+                                    <sheet>
+                                        <field name="image" widget='image' class="oe_avatar oe_left" options='{"preview_image": "image_medium"}'/>
+                                        <div class="oe_title">
+                                            <label for="name" class="oe_edit_only"/>
+                                            <h1><field name="name" style="width: 70%%"/></h1>
+                                            <field name="category_id" widget="many2many_tags" placeholder="Tags..." style="width: 70%%"/>
+                                        </div>
+                                        <group>
+                                            <field name="function" placeholder="e.g. Sales Director"/>
+                                            <field name="email"/>
+                                            <field name="phone"/>
+                                            <field name="mobile"/>
+                                        </group>
+                                        <group>
+                                            <label for="type"/>
+                                            <div name="div_type">
+                                                <field class="oe_inline" name="type"/>
+                                            </div>
+                                            <label for="street" string="Address"/>
+                                            <div name="div_address">
+                                                <field name="street" placeholder="Street..."/>
+                                                <field name="street2"/>
+                                                <div class="address_format">
+                                                    <field name="city_id" placeholder="City" style="width: 40%%"/>
+                                                    <field name="state_id" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}' on_change="onchange_state(state_id)"/>
+                                                    <field name="zip" placeholder="ZIP" style="width: 20%%"/>
+                                                </div>
+                                                <field name="country_id" placeholder="Country" class="oe_no_button" options='{"no_open": True}'/>
+                                            </div>
+                                        </group>
+                                        <field name="supplier" invisible="True"/>
+                                        <field name="customer" invisible="True"/>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Call logs">
+                        	<group>
+                        		<group>
+                        			<field name="yet_to_log" />
+                        			<field name="logged_call" string="Price list"/>
+                        		</group>
+                        		<group>
+                        			<field name="call_again" string="First Visit"/>
+                        			<field name="schedule_call"/>
+                        		</group> 
+                            </group>
+                            <separator string='Schedule Calls and Logged Calls' colspan="4"/>
+                            <field name='phonecall_ids' />
+                            <!--<separator string='Schedule Calls' colspan="4"/>
+                            <field name='phonecall_ids' context="{'default_state':'open'}" domain="[('state','!=','done')]" clospan="4" nolabel="1"/> -->
+                        </page>
+                        <page string="Sales &amp; Purchases">
+                            <group>
+                            <div name="buttons" class="oe_left"></div>
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                                    <field name="ref"/>
+                                    <field name="date"/>
+                                </group>
+                                <group>
+                                	<field name="active"/>
+                                    <field name="lang"/>
+                                    <field name="count_invoice" invisible="1"/>
+                                    <field name="count_quotation" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <!-- The History page becomes visible as soon as there is something to display inside -->
+                        <page string="History" name="page_history" invisible="True">
+                        </page>
+                    </notebook>
+                <div class="oe_chatter">
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+                </xpath>
+			</field>
+		</record>
+
+        <record id="action_partner_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_is_company":1,"search_default_team_type":1}</field>
+            <field name="search_view_id" ref="view_res_partner_filter_inherited"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                OpenERP helps you easily track all activities related to
+                a customer; discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+        
+        
+        <menuitem id="base.menu_partner_form" parent="base.menu_sales" action="action_partner_form" sequence="1"/>
+        
+		<record id="view_crm_partner_geo_form_inherited" model="ir.ui.view">
+        	<field name="name">res.partner.geo.inherit</field>
+	        <field name="model">res.partner</field>
+	        <field name="inherit_id" ref="crm_partner_assign.view_crm_partner_geo_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//page[@string='Account Profile']" position="before">
+	                <page string="Internal Notes">
+                		<field name="internal_note" placeholder="Put an internal note..."/>
+	                	<group col="3">
+	                		<group string="Bio">
+                      			<field name="bio" nolabel="1" placeholder="Bio"/>
+	                		</group>
+	                		<group string="Activity Summary">
+                        		<field name="comment" nolabel="1" placeholder="Activity Summary..."/>
+	                		</group>
+	                		<group string="Product Summary">
+                        		<field name="product_summary" nolabel="1" placeholder="Product Summary..."/>
+	                		</group>
+	                	</group>
+                    </page>
+	            </xpath>
+	            <xpath expr="//page[@string='Geo Localization']" position="replace">
+	            	<page string="Geo Localization">
+		            	<group colspan="2" col="2">
+	                        <separator string="Geo Localization" colspan="2"/>
+	                        <button string="Geo Localize" name="geo_localize" colspan="2" icon="gtk-apply" type="object"/>
+	                        <field name="partner_latitude"/>
+	                        <field name="partner_longitude"/>
+	                        <field name="date_localization"/>
+	                    </group>
+                    </page>
+                    <page string="Properties">
+							<group colspan="4">
+								<group>
+									<field name='created_on'/>
+									<field name='created_by'/>
+								</group>
+								<group>
+									<field name='modified_on'/>
+									<field name='modified_by'/>
+								</group>
+							</group>
+						</page>
+                    <page string="Attachments">
+                    	<field name="attachment_ids" widget="one2many"/>
+                    </page>
+	        	</xpath>
+			</field>
+		</record>
+		
+		 <record id="view_city_form" model="ir.ui.view">
+	        	<field name="name">city.city.form.view</field>
+		        <field name="model">city.city</field>
+		        <field name="arch" type="xml">
+				<form string="City" version="7.0">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group>
+                            <field name="district_id"/>
+                            <field name="state_id"/>
+                        </group>
+                        <group>
+                            <field name="province_id"/>
+                            <field name="country_id"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+		</record>
+		
+        <record id="view_city_tree" model="ir.ui.view">
+            <field name="name">city.city</field>
+            <field name="model">city.city</field>
+            <field name="arch" type="xml">
+                <tree string="Cities">
+                    <field name="name"/>
+                    <field name="district_id"/>
+                    <field name="state_id"/>
+                    <field name="province_id"/>
+                    <field name="country_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_city_form" model="ir.actions.act_window">
+            <field name="name">City</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">city.city</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_city_tree"/>
+        </record>
+        
+         <menuitem action="action_city_form" id="menu_manage_city" parent="base.menu_localisation" sequence="1" groups="base.group_sale_salesman,base.group_sale_manager"/>
+        
+		 <record id="view_district_form" model="ir.ui.view">
+	        	<field name="name">district.district.form.view</field>
+		        <field name="model">district.district</field>
+		        <field name="arch" type="xml">
+				<form string="District" version="7.0">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group>
+                            <field name="state_id"/>
+                            <field name="country_id"/>
+                        </group>
+                        <group>
+                        	<field name="province_id"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+		</record>
+		
+        <record id="view_district_tree" model="ir.ui.view">
+            <field name="name">district.district</field>
+            <field name="model">district.district</field>
+            <field name="arch" type="xml">
+                <tree string="District">
+                    <field name="name"/>
+                    <field name="state_id"/>
+                    <field name="province_id"/>
+                    <field name="country_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_district_form" model="ir.actions.act_window">
+            <field name="name">District</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">district.district</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_district_tree"/>
+        </record>
+        
+         <menuitem action="action_district_form" id="menu_manage_district" parent="base.menu_localisation" sequence="2" groups="base.group_sale_salesman,base.group_sale_manager"/>
+         
+   		 <record id="view_province_form" model="ir.ui.view">
+	        	<field name="name">province.province.form.view</field>
+		        <field name="model">province.province</field>
+		        <field name="arch" type="xml">
+				<form string="Province" version="7.0">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group>
+                            <field name="country_id"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </form>
+            </field>
+		</record>
+		
+        <record id="view_province_tree" model="ir.ui.view">
+            <field name="name">province.province</field>
+            <field name="model">province.province</field>
+            <field name="arch" type="xml">
+                <tree string="Province">
+                    <field name="name"/>
+                    <field name="country_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_province_form" model="ir.actions.act_window">
+            <field name="name">Province</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">province.province</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_province_tree"/>
+        </record>
+        
+         <menuitem action="action_province_form" id="menu_manage_province" parent="base.menu_localisation" sequence="3" groups="base.group_sale_salesman,base.group_sale_manager"/>
+         
+        <record id="view_country_state_tree_4devnet" model="ir.ui.view">
+            <field name="name">res.country.state.tree.4devnet</field>
+            <field name="model">res.country.state</field>
+            <field name="inherit_id" ref="base.view_country_state_tree"/>
+            <field name="arch" type="xml">
+        		<field name="country_id" position="before">
+            		<field name="province_id"/>
+        		</field>
+            </field>
+        </record>
+        
+        <record id="view_country_state_form_4devnet" model="ir.ui.view">
+            <field name="name">res.country.state.form.4devnet</field>
+            <field name="model">res.country.state</field>
+            <field name="inherit_id" ref="base.view_country_state_form"/>
+            <field name="arch" type="xml">	
+            	<field name="country_id" position="before">
+            		<field name="province_id"/>
+        		</field>
+            </field>
+        </record>
+        
+        <record id="view_res_country_inherited" model="ir.ui.view">
+            <field name="name">res.country.form</field>
+            <field name="model">res.country</field>
+            <field name="inherit_id" ref="base.view_country_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//form[@string='Country']" position="replace">
+            	<form string="Country" version="7.0">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="currency_id"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="vat_type"/>
+                            <field name="vat_type_two"/>
+                        </group>
+                    </group>
+                    <field name="address_format" strning="Address Format" groups="base.group_no_one" placeholder="Address format..."/>
+                </form>
+             </xpath>
+            </field>
+        </record>
+        
+<!-- End of code changes done by George Vincent -->		
+		
+		<record id="view_order_form_inherit" model="ir.ui.view">
+			<field name="name">sale.order.form.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form" />
+			<field name="arch" type="xml">
+				<field name="partner_id" on_change="onchange_partner_id(partner_id, context)" domain="[('customer','=',True)]"
+					context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload":
+					True}' position="replace">
+					<field name="partner_id" on_change="onchange_partner_id(partner_id, context)" domain="['|',('customer','=','True'),('prospects','=','True')]"
+						context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload":
+						True}'/>
+				</field>
+			</field>
+		</record>
+		<record id="purchase_order_form_inherit_4devnet" model="ir.ui.view">
+			<field name="name">purchase.order.form.inherit.4devnet</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form"/>
+			<field name="arch" type="xml">
+				<field name="partner_id" on_change="onchange_partner_id(partner_id)" context="{'search_default_supplier':1,'default_supplier':1,'default_customer':0}"
+					domain="[('supplier','=',True)]" position="replace">
+					<field name="partner_id" on_change="onchange_partner_id(partner_id)" context="{'search_default_supplier':1,'default_supplier':1,'default_customer':0}"
+						domain="['|',('supplier','=',True),('prospects','=','True')]"/>
+				</field>
+			</field>
+		</record>
+		
+		<record id="view_partner_title_tree_inherit_4devnet" model="ir.ui.view">
+			<field name="name">res.partner.title.tree.inherit.4devnet</field>
+			<field name="model">res.partner.title</field>
+			<field name="inherit_id" ref="base.view_partner_title_tree"/>
+			<field name="arch" type="xml">
+				<field name="shortcut" position="after">
+					<field name="code_person"/>
+					<field name="code_company"/>
+					<field name="code_sport"/>
+				</field>
+			</field>
+		</record>
+		<record id="view_partner_title_form_inherit_4devnet" model="ir.ui.view">
+			<field name="name">res.partner.title.form.inherit.4devnet</field>
+			<field name="model">res.partner.title</field>
+			<field name="inherit_id" ref="base.view_partner_title_form"/>
+			<field name="arch" type="xml">
+				<field name="shortcut" position="after">
+					<group string="Define Category...">
+						<field name="code_person"/>
+						<field name="code_company"/>
+						<field name="code_sport"/>
+					</group>
+				</field>
+			</field>
+		</record>
+        
+        <record id="view_partner_brand_tree" model="ir.ui.view">
+			<field name="name">partner.brand.tree</field>
+			<field name="model">partner.brand</field>
+			<field name="arch" type="xml">
+				<tree string="Brand" version="7.0"> 
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record id="view_partner_brand_form" model="ir.ui.view">
+			<field name="name">partner.brand.form</field>
+			<field name="model">partner.brand</field>
+			<field name="arch" type="xml">
+				<form string="Brand" version="7.0"> 
+					<gorup> 
+						<label for="name"/>
+						<field name="name"/>
+					</gorup>
+				</form>
+			</field>
+		</record>
+		<record id="action_partner_brand" model="ir.actions.act_window">
+            <field name="name">Brand</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.brand</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem action="action_partner_brand" id="menu_partner_brand_partner" parent="base.menu_base_config" name="Brand"/>
+        
+        <record id="view_company_type_tree" model="ir.ui.view">
+			<field name="name">company.type.tree</field>
+			<field name="model">company.type</field>
+			<field name="arch" type="xml">
+				<tree string="company" version="7.0"> 
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		<record id="view_company_type_form" model="ir.ui.view">
+			<field name="name">company.type.form</field>
+			<field name="model">company.type</field>
+			<field name="arch" type="xml">
+				<form string="company" version="7.0"> 
+					<gorup> 
+						<label for="name"/>
+						<field name="name"/>
+					</gorup>
+				</form>
+			</field>
+		</record>
+		<record id="action_company_type" model="ir.actions.act_window">
+            <field name="name">company type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">company.type</field>
+            <field name="view_type">form</field>
+        </record>
+        <menuitem action="action_company_type" id="menu_company_type" parent="base.menu_base_config" name="Company Type"/>
+        
+        
+        	
+	</data>
+</openerp>

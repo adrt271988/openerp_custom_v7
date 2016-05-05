@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <record model="ir.ui.view" id="am_sale_order_form">
+            <field name="name">am.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="discount_ids" widget="many2many_tags" domain="[('order_type','=','sale')]"/>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='price_unit']" position="after">
+                    <field name="discounted_unit_price"/>
+                </xpath>
+	        <xpath expr="/form/sheet/notebook/page/field/tree/field[@name='discount']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath> 
+            </field>
+        </record>
+    </data>
+</openerp>

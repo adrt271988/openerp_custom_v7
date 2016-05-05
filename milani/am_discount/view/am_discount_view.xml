@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+        <record model="ir.ui.view" id="am_discount_form">
+	    <field name="name">am.discount.form</field>
+	    <field name="model">am.discount</field>
+	    <field name="arch" type="xml">
+		<form string="Descuentos" version="7.0">
+		    <sheet>
+			<group>
+			    <group>
+				<field name="name" placeholder="ej. Luck Advance Payment Discount"/>
+				<field name="value" required="1" string="Discount (%%)"/>
+			    </group>
+			    <group>
+				<field name="active"/>
+				<field name="order_type"/>
+			    </group>
+			</group>
+			<field name="note" placeholder="Notes and Considerations..."/>
+		    </sheet>
+		</form>
+	    </field>
+	</record>
+	
+        <record id="am_discount_tree" model="ir.ui.view">
+            <field name="name">am.discount.tree</field>
+            <field name="model">am.discount</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Discounts">
+                    <field name="name"/>
+                    <field name="order_type"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+	
+        <record id="am_discount_action" model="ir.actions.act_window">
+            <field name="name">Discounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">am.discount</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help"></field>
+        </record>
+	
+        <menuitem
+            id="am_discount_menu"
+            sequence="50"
+            name="Discounts"
+            string="Discounts"
+            action="am_discount_action"
+            parent="account.menu_finance_configuration"/>
+	</data>
+</openerp>

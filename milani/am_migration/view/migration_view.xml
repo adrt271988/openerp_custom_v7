@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	<menuitem id="am_migration_menu" name="Migration" sequence="100"/>
+	<menuitem id="am_product_migration_submenu" parent="am_migration_menu" name="Product Migration" sequence="1"/>
+    </data>
+</openerp>

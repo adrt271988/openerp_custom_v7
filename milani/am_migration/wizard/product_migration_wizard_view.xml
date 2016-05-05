@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+    <record id="product_migration_wizard_view" model="ir.ui.view">
+        <field name="name">product.migration.wizard.view</field>
+        <field name="model">product.migration.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Product Migration" version="7.0">
+		<group>
+		    <field name="sure" required="1"/>
+		</group>
+		<footer>
+		    <button name="import_data" string="Import" class="oe_highlight" type="object"/> or
+		    <button string="Cancel" class="oe_link" special="cancel"/>
+		</footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="product_migration_wizard_action">
+        <field name="name">Product Migration</field>
+        <field name="res_model">product.migration.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product_migration_wizard_view"/>
+        <field name="target">new</field>
+        <field name="multi">True</field>
+    </record>
+
+    <menuitem id="am_product_migration_menu" parent="am_product_migration_submenu" action="product_migration_wizard_action" name="Product Migration" sequence="3"/>
+  </data>
+</openerp>

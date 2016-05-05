@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="am_attribute_product_normal_form_view">
+            <field name="name">am.attribute.product.normal.form.view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="am_product.inherited_product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='description_name']" position="before">
+                    <field name="attribute_id" required="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

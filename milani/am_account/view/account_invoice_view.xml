@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <record model="ir.ui.view" id="am_account_invoice_form">
+            <field name="name">am.account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_invoice_sent']" position="replace">
+                    <button name="action_invoice_sent" type="object" string="Send by Email"
+                        attrs="{'invisible':['|',('sent','=',True), ('state', 'not in', ['proforma','proforma2'])]}"
+                        class="oe_highlight" groups="base.group_user"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_tax_id']" position="after">
+                    <field name="discount_ids" widget="many2many_tags"/>
+                    <field name="discounted_unit_price" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+        
+       <record model="ir.ui.view" id="am_account_invoice_supplier_form">
+            <field name="name">am.account.invoice.supplier.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_tax_id']" position="before">
+                    <field name="add_cost" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

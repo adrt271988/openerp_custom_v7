@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- Wizard view -->
+		<record id="hr_bonus_report_wizard_form" model="ir.ui.view">
+			<field name="name">hr.bonus.report.wizard.form</field>
+			<field name="model">hr.bonus.report.wizard</field>
+			<field name="">form</field>
+			<field name="arch" type="xml">
+				<form string="Reporte de Decimos" version="7.0">
+					<group string="Configuración">
+						<field name="report_type" class="oe_inline"/>
+						<field name="bonus_type" class="oe_inline"/>
+					</group>
+					<group attrs="{'invisible':[('report_type', '!=', 'period')]}" string="Décimos por Período">
+						<label string="Este asistente crea un reporte de los décimos acumulados por período" colspan="4"/>
+						<field name="period_id" class="oe_inline" />
+					</group>
+					<group attrs="{'invisible':[('report_type', '!=', 'employee')]}" string="Décimos por Empleado">
+                        <label string="Este asistente crea un reporte de décimos acumulados por empleados"/>
+                        <group colspan="4">
+                            <field name="date_from" attrs="{'required':[('report_type', '!=', 'period')]}"/>
+                            <field name="date_to" attrs="{'required':[('report_type', '!=', 'period')]}"/>
+                        </group>
+                        <group string="Empleados" colspan="4">
+                            <field nolabel="1" name="employee_ids" widget="many2many" attrs="{'required':[('report_type', '!=', 'period')]}"/>
+                        </group>
+					</group>
+					<footer>
+						<button string="Crear" type="object" name="create_report" icon="STOCK_GO_FORWARD"/>
+						<button string="Cancelar" special="cancel" icon="gtk-cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<!-- Wizard action -->
+<!--
+		<record id="hr_bonus_report_wizard_action" model="ir.actions.act_window">
+			<field name="name">Reporte de Decimos</field>
+            <field name="type">ir.actions.act_window</field>
+			<field name="res_model">hr.bonus.report.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="hr_bonus_report_wizard_form"/>
+			<field name="target">new</field>
+		</record>
+-->
+
+        <act_window name="Reporte de Décimos"
+            key2="client_action_multi"
+            res_model="hr.bonus.report.wizard"
+            src_model="hr.payslip"
+            view_type="form"
+            view_mode="form"
+            target="new"
+            id="hr_bonus_report_wizard_action"/>
+
+		<!-- Menu -->
+<!--
+		<menuitem id="menu_hr_bonus_report_wizard_report" parent="hr_payroll.menu_hr_root_payroll" name="Reporte de Decimos"
+				sequence="100" action="hr_bonus_report_wizard_action"/>
+-->
+
+	</data>
+</openerp>

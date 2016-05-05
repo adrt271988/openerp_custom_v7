@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	   <record id="gender_master_form_view" model="ir.ui.view">
+            <field name="name">gender.master.form</field>
+            <field name="model">gender.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="gender_master_tree_view" model="ir.ui.view">
+            <field name="name">gender.master.tree</field>
+            <field name="model">gender.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">  
+                	    <field name="category_id"/>                   
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="gender_master_action" model="ir.actions.act_window">
+            <field name="name">Gender Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">gender.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="gender_master_tree_view"/>
+       </record>
+       <menuitem action="gender_master_action" id="menu_gender_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+		
+	<record id="color_master_form_view" model="ir.ui.view">
+            <field name="name">color.master.form</field>
+            <field name="model">color.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="color_master_tree_view" model="ir.ui.view">
+            <field name="name">color.master.tree</field>
+            <field name="model">color.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="color_master_action" model="ir.actions.act_window">
+            <field name="name">Color Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">color.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="color_master_tree_view"/>
+       </record>
+       <menuitem action="color_master_action" id="menu_color_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+			
+	<record id="design_master_form_view" model="ir.ui.view">
+            <field name="name">design.master.form</field>
+            <field name="model">design.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="design_master_tree_view" model="ir.ui.view">
+            <field name="name">design.master.tree</field>
+            <field name="model">design.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="design_master_action" model="ir.actions.act_window">
+            <field name="name">Design Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">design.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="design_master_tree_view"/>
+       </record>
+       <menuitem action="design_master_action" id="menu_design_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+			
+	<record id="seat_post_diameter_master_form_view" model="ir.ui.view">
+            <field name="name">seat.post.diameter.master.form</field>
+            <field name="model">seat.post.diameter.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="seat_post_diameter_master_tree_view" model="ir.ui.view">
+            <field name="name">seat.post.diameter.master.tree</field>
+            <field name="model">seat.post.diameter.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="seat_post_diameter_master_action" model="ir.actions.act_window">
+            <field name="name">Seat-Post Diameter-Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seat.post.diameter.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="seat_post_diameter_master_tree_view"/>
+       </record>
+       <menuitem action="seat_post_diameter_master_action" id="menu_seat_post_diameter_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+			
+        <record id="bar_bore_diameter_master_form_view" model="ir.ui.view">
+            <field name="name">bar.bore.diameter.master.form</field>
+            <field name="model">bar.bore.diameter.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="bar_bore_diameter_master_tree_view" model="ir.ui.view">
+            <field name="name">bar.bore.diameter.master.tree</field>
+            <field name="model">bar.bore.diameter.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="bar_bore_diameter_master_action" model="ir.actions.act_window">
+            <field name="name">Bar-bore Diameter-Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bar.bore.diameter.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bar_bore_diameter_master_tree_view"/>
+       </record>
+       <menuitem action="bar_bore_diameter_master_action" id="menu_bar_bore_diameter_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+				
+	 <record id="rake_master_form_view" model="ir.ui.view">
+            <field name="name">rake.master.form</field>
+            <field name="model">rake.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="rake_master_tree_view" model="ir.ui.view">
+            <field name="name">rake.master.tree</field>
+            <field name="model">rake.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="rake_master_action" model="ir.actions.act_window">
+            <field name="name">Rake Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rake.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="rake_master_tree_view"/>
+       </record>
+       <menuitem action="rake_master_action" id="menu_rake_oo_master" parent="base.menu_base_config"/> 
+              	
+<!--################################################################################################## -->		
+		
+	    <record id="width_oo_master_form_view" model="ir.ui.view">
+            <field name="name">width.oo.master.form</field>
+            <field name="model">width.oo.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="width_oo_master_tree_view" model="ir.ui.view">
+            <field name="name">width.oo.master.tree</field>
+            <field name="model">width.oo.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="width_oo_master_action" model="ir.actions.act_window">
+            <field name="name">Width-OO Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">width.oo.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="width_oo_master_tree_view"/>
+       </record>
+       <menuitem action="width_oo_master_action" id="menu_width_oo_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+				
+		<record id="t_axle_master_form_view" model="ir.ui.view">
+            <field name="name">taxle.master.form</field>
+            <field name="model">taxle.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="t_axle_master_tree_view" model="ir.ui.view">
+            <field name="name">taxle.master.tree</field>
+            <field name="model">taxle.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="t_axle_master_action" model="ir.actions.act_window">
+            <field name="name">T-axle Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">taxle.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="t_axle_master_tree_view"/>
+       </record>
+       <menuitem action="t_axle_master_action" id="menu_t_axle_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+	
+	
+		<record id="brakes_master_form_view" model="ir.ui.view">
+            <field name="name">brakes.tube.master.form</field>
+            <field name="model">brakes.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="brakes_master_tree_view" model="ir.ui.view">
+            <field name="name">brakes.tube.master.tree</field>
+            <field name="model">brakes.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="brakes_master_action" model="ir.actions.act_window">
+            <field name="name">Brakes Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">brakes.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="brakes_master_tree_view"/>
+       </record>
+       <menuitem action="brakes_master_action" id="menu_brakes_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+	
+		<record id="head_tube_master_form_view" model="ir.ui.view">
+            <field name="name">head.tube.master.form</field>
+            <field name="model">head.tube.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="head_tube_master_tree_view" model="ir.ui.view">
+            <field name="name">head.tube.master.tree</field>
+            <field name="model">head.tube.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="head_tube_master_action" model="ir.actions.act_window">
+            <field name="name">Head-Tube Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">head.tube.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="head_tube_master_tree_view"/>
+       </record>
+       <menuitem action="head_tube_master_action" id="menu_head_tube_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+	
+		<record id="width_master_form_view" model="ir.ui.view">
+            <field name="name">width.master.form</field>
+            <field name="model">width.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="width_master_tree_view" model="ir.ui.view">
+            <field name="name">width.master.tree</field>
+            <field name="model">width.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="width_master_action" model="ir.actions.act_window">
+            <field name="name">Width Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">width.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="width_master_tree_view"/>
+       </record>
+       <menuitem action="width_master_action" id="menu_width_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+		
+		<record id="ussize_master_form_view" model="ir.ui.view">
+            <field name="name">ussize.master.form</field>
+            <field name="model">ussize.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/> 
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="ussize_master_tree_view" model="ir.ui.view">
+            <field name="name">ussize.master.tree</field>
+            <field name="model">ussize.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="ussize_master_action" model="ir.actions.act_window">
+            <field name="name">USsize Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ussize.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ussize_master_tree_view"/>
+       </record>
+       <menuitem action="ussize_master_action" id="menu_ussize_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+		
+	   <record id="manufacturer_master_form_view" model="ir.ui.view">
+            <field name="name">manufacturer.master.form</field>
+            <field name="model">manufacturer.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="manufacturer_master_tree_view" model="ir.ui.view">
+            <field name="name">manufacturer.master.tree</field>
+            <field name="model">manufacturer.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="manufacturer_master_action" model="ir.actions.act_window">
+            <field name="name">Manufacturer Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">manufacturer.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="manufacturer_master_tree_view"/>
+       </record>
+       <menuitem action="manufacturer_master_action" id="menu_manufacturer_master" parent="base.menu_base_config"/>
+              	
+<!--################################################################################################## -->		
+		
+		<record id="product_product_tree_view_4devnet" model="ir.ui.view">
+            <field name="name">product.product.tree.4devnet</field>
+            <field name="model">product.product</field>            	
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+            	 <field name="state" position="after">
+            	 	<field name="activity_id"/>           	 	
+            	 	<field name="type_id"/>	
+            	 	<field name="specialty_id"/>
+            	 	<field name="wheel_size_id"/>
+            	 	<field name="size_id"/> 
+            	 	<field name="discipline_id"/>   	     	
+            	 </field> 	 
+            </field>
+        </record> 
+		<record id="product_product_form_view_4devnet" model="ir.ui.view">
+            <field name="name">product.product.form.4devnet</field>
+            <field name="model">product.product</field>            	
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+            	<field name="categ_id" position="replace">
+            		<field name="categ_id" on_change="categ_id_change(categ_id,context)"/>
+            	</field>	            	
+            	 <page string="Accounting" position="after">
+            	 	<page string="Other Info"> 	
+            	 		<group colspan='6' rawspan='6'>
+            	 			<group>            	 			 	
+            	 				<field name="sport"/>
+            	 				<field name="spcl_tech"/>
+            	 				<field name="material_desc"/>
+            	 				<field name="material"/>
+            	 			</group>
+            	 			<group>
+            	 				<field name="activity_id"  domain="[('category_id','=',categ_id)]"/>           	 	
+            	 				<field name="type_id" domain="[('category_id','=',categ_id)]"/>	
+            	 				<field name="specialty_id" domain="[('category_id','=',categ_id)]"/>
+            	 				<field name="brand_id"/>
+            	 				<field name="series"/>            	 			
+            	 				<field name="wheel_size_id" domain="[('category_id','=',categ_id)]"/>
+            	 				<field name="size_id" domain="[('category_id','=',categ_id)]"/> 
+            	 				<field name="discipline_id" domain="[('category_id','=',categ_id)]"/>
+            	 				<field name="model"/>
+            	 			</group>           	 			
+            	 		</group>
+            	 		<group>            	 			
+            	 		    <group>
+            	 		    	<field name="color_id"/>
+            	 		    	<field name="design_id"/>
+            	 		    	<field name="seat_id"/>
+            	 		    	<field name="bar_id"/>
+            	 		    	<field name="rake_id"/>		
+            	 		    	<field name="width_oo_id"/>
+				            	<!-- <field name="spec1"/>
+				            	<field name="spec2"/>
+				            	<field name="spec3"/>
+				            	<field name="spec4"/>           	 				
+            	 			    <field name="spec5"/>
+            	 				<field name="spec6"/> -->           	 				
+            	 			</group>
+            	 			<group>
+            	 				<field name="taxle_id"/>
+            	 				<field name="brakes_id"/>
+            	 				<field name="head_tube_id"/>
+            	 				<field name="width_id"/>
+            	 				<field name="ussize_id"/>
+            	 				<field name="manufacturer_id"/>
+            	 				<!--  <field name="spec7"/>
+				            	<field name="spec8"/>
+				            	<field name="spec9"/>
+				            	<field name="spec10"/>
+				            	<field name="spec11"/> -->            	 				
+            	 		    </group>	 			
+            	 		</group>		
+            	 	</page>	   	     	
+            	 </page> 	 
+            </field>
+        </record> 
+       <!--<menuitem id="base.menu_otherinfo" name="Other Info" parent="base.menu_base_config"/>-->
+       
+<!--  ************** Activity Master Screen ***************** -->     	      
+       <record id="activity_master_form_view" model="ir.ui.view">
+            <field name="name">activity.master.form</field>
+            <field name="model">activity.master</field>
+            <field name="arch" type="xml">
+                <form string="Activity" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/>
+                    		<field name="name"/>
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="activity_master_tree_view" model="ir.ui.view">
+            <field name="name">activity.master.tree</field>
+            <field name="model">activity.master</field>
+            <field name="arch" type="xml">
+                <tree string="Activity" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="activity_master_action" model="ir.actions.act_window">
+            <field name="name">Activity Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">activity.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="activity_master_tree_view"/>
+       </record>
+       <menuitem action="activity_master_action" id="menu_activity_master" parent="base.menu_base_config"/>  
+        
+<!--  ************** Type Master Screen *****************-->        	      
+       <record id="type_master_form_view" model="ir.ui.view">
+            <field name="name">type.master.form</field>
+            <field name="model">type.master</field>
+            <field name="arch" type="xml">
+                <form string="Type" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/>
+                    		<field name="name"/>                    		
+                    	</group>
+                </form> 
+            </field> 
+       </record> 
+       <record id="type_master_tree_view" model="ir.ui.view">
+            <field name="name">type.master.tree</field>
+            <field name="model">type.master</field>
+            <field name="arch" type="xml">
+                <tree string="Type" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="type_master_action" model="ir.actions.act_window">
+            <field name="name">Type Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">type.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="type_master_tree_view"/>
+       </record>
+       <menuitem action="type_master_action" id="menu_type_master" parent="base.menu_base_config"/>
+              	
+<!--1  ************** Specialty Master Screen *****************-->     	      
+       <record id="specialty_master_form_view" model="ir.ui.view">
+            <field name="name">specialty.master.form</field>
+            <field name="model">specialty.master</field>
+            <field name="arch" type="xml">
+                <form string="Specialty" version="7.0">                    
+                    	<group><field name="category_id"/><field name="name"/></group>                    
+                </form> 
+            </field> 
+       </record> 
+       <record id="specialty_master_tree_view" model="ir.ui.view">
+            <field name="name">specialty.master.tree</field>
+            <field name="model">specialty.master</field>
+            <field name="arch" type="xml">
+                <tree string="Specialty" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="specialty_master_action" model="ir.actions.act_window">
+            <field name="name">Specialty Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">specialty.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="specialty_master_tree_view"/>
+       </record>
+       <menuitem action="specialty_master_action" id="menu_specialty_master" parent="base.menu_base_config"/>   
+       
+<!--2  ************** Wheel-Size Master Screen *****************-->       	      
+       <record id="wheel_size_master_form_view" model="ir.ui.view">
+            <field name="name">wheel.size.master.form</field>
+            <field name="model">wheel.size.master</field>
+            <field name="arch" type="xml">
+                <form string="Wheel Size" version="7.0">                    
+                    	<group><field name="category_id"/><field name="name"/></group>                    
+                </form> 
+            </field> 
+       </record> 
+       <record id="wheel_size_master_tree_view" model="ir.ui.view">
+            <field name="name">wheel.size.master.tree</field>
+            <field name="model">wheel.size.master</field>
+            <field name="arch" type="xml">
+                <tree string="Wheel Size" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="wheel_size_master_action" model="ir.actions.act_window">
+            <field name="name">Wheel-Size Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wheel.size.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="wheel_size_master_tree_view"/>
+       </record>
+       <menuitem action="wheel_size_master_action" id="menu_wheel_size_master" parent="base.menu_base_config"/> 
+       
+<!-- ************** size Master Screen *****************-->        	      
+       <record id="size_master_form_view" model="ir.ui.view">
+            <field name="name">size.master.form</field>
+            <field name="model">size.master</field>
+            <field name="arch" type="xml">
+                <form string="Size" version="7.0">                   
+                    	<group>
+                    		<field name="category_id"/>
+                    		<field name="name"/>                    		
+                    	</group>                  
+                </form> 
+            </field> 
+       </record> 
+       <record id="size_master_tree_view" model="ir.ui.view">
+            <field name="name">size.master.tree</field>
+            <field name="model">size.master</field>
+            <field name="arch" type="xml">
+                <tree string="Size" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="size_master_action" model="ir.actions.act_window">
+            <field name="name">Size Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">size.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="size_master_tree_view"/>
+       </record>
+       <menuitem action="size_master_action" id="menu_size_master" parent="base.menu_base_config"/>
+                        
+<!--  ************** Discipline Master Screen *****************-->  
+	     	      
+       <record id="discipline_master_form_view" model="ir.ui.view">
+            <field name="name">discipline.master.form</field>
+            <field name="model">discipline.master</field>
+            <field name="arch" type="xml">
+                <form string="Discipline" version="7.0">                    
+                    	<group>
+                    		<field name="category_id"/>
+                    		<field name="name"/>                    		
+                    	</group>                   
+                </form> 
+            </field> 
+       </record> 
+       <record id="discipline_master_tree_view" model="ir.ui.view">
+            <field name="name">discipline.master.tree</field>
+            <field name="model">discipline.master</field>
+            <field name="arch" type="xml">
+                <tree string="Discipline" version="7.0">                    
+                    	<field name="name"/>                   
+                </tree> 
+            </field> 
+       </record>
+       <record id="discipline_master_action" model="ir.actions.act_window">
+            <field name="name">Discipline Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">discipline.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="discipline_master_tree_view"/>
+       </record>
+       <menuitem action="discipline_master_action" id="menu_discipline_master" parent="base.menu_base_config"/> 
+               		
+       	                	
+	</data>
+</openerp>

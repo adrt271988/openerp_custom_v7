@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="inherited_product_normal_form_view">
+            <field name="name">inherit.product.normal.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product_mil_4devnet.product_product_form_view_4devnet" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="am_ean13" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='list_price']" position="replace">
+                    <field name="list_price"/>
+                </xpath>
+                <xpath expr="//field[@name='list_price']" position="after">
+                    <field name="x_factor"/>
+                </xpath>
+                <xpath expr="//field[@name='ean13']" position="replace"/>
+                <xpath expr="//field[@name='type']" position="before">
+                    <field name="description_name" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='manufacturer_id']" position="attributes">
+                    <attribute name="required">True</attribute>
+                </xpath>
+                <xpath expr="//group[@name='status']" position="before">
+                    <group name="am_avg_cost" string="Inventory Valuation">
+                        <field name="am_average_cost"/>
+                    </group>
+                </xpath>
+                <xpath expr="//page[@string='Other Info']" position="after">
+                    <page string="Purchase History">
+                        <group name="purchase_history">
+                            <field name="am_avg_history" readonly="1" nolabel="1">
+                                <tree>
+                                    <field name="date"/>
+                                    <field name="quantity"/>
+                                    <field name="standard_cost"/>
+                                    <field name="landed_cost"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='type_id']" position="replace"/>
+                <xpath expr="//field[@name='series']" position="replace"/>
+                <xpath expr="//field[@name='wheel_size_id']" position="replace"/>
+                <xpath expr="//field[@name='discipline_id']" position="replace"/>
+                <xpath expr="//field[@name='model']" position="replace"/>
+                <xpath expr="//field[@name='taxle_id']" position="replace">
+                    <field name="release"/>
+                </xpath>
+                <xpath expr="//field[@name='release']" position="after">
+                    <field name="bottom_braket"/>
+                </xpath>
+                <xpath expr="//field[@name='activity_id']" position="replace">
+                    <field name="activity_id" widget="many2many_tags"/>
+                    <field name="gender_id" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//field[@name='color_id']" position="after">
+                    <field name="finish" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="inherited_manufacturer_form_view">
+            <field name="name">inherited_manufacturer_form_view</field>
+            <field name="model">manufacturer.master</field>
+            <field name="inherit_id" ref="product_mil_4devnet.manufacturer_master_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="code"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="inherited_am_product_tree_view">
+            <field name="name">inherited.am.product.tree.view</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product_mil_4devnet.product_product_tree_view_4devnet" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='activity_id']" position="replace"/>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="description_name"/>
+                    <field name="activity_id"/>
+                </xpath>
+                <xpath expr="//field[@name='type_id']" position="replace"/>
+                <xpath expr="//field[@name='specialty_id']" position="replace"/>
+                <xpath expr="//field[@name='wheel_size_id']" position="replace"/>
+                <xpath expr="//field[@name='size_id']" position="replace"/>
+                <xpath expr="//field[@name='discipline_id']" position="replace"/>
+                <xpath expr="//field[@name='virtual_available']" position="after">
+                    <field name="incoming_qty"/>
+                    <field name="outgoing_qty"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="release_master_action" model="ir.actions.act_window">
+            <field name="name">Release Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">release.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="release_master_action" id="menu_release_master" parent="base.menu_base_config"/>
+        
+        <record id="finish_master_action" model="ir.actions.act_window">
+            <field name="name">Finish Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">finish.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem action="finish_master_action" id="menu_finish_master" parent="base.menu_base_config"/>
+
+        <record id="bottom_braket_master_form_view" model="ir.ui.view">
+            <field name="name">bottom.braket.master.form.view</field>
+            <field name="model">bottom.braket.master</field>
+            <field name="arch" type="xml">
+                <form string="Bottom Braket" version="7.0">
+                    <group>
+                        <field name="name"/> 
+                        <field name="category_id"/>
+                    </group>
+                </form> 
+            </field> 
+        </record>
+        
+        <record id="bottom_braket_master_tree_view" model="ir.ui.view">
+            <field name="name">bottom.braket.master.tree.view</field>
+            <field name="model">bottom.braket.master</field>
+            <field name="arch" type="xml">
+                <tree string="Bottom Braket" version="7.0">
+                    <field name="name"/>
+                    <field name="category_id"/>
+                </tree> 
+            </field> 
+        </record>
+        
+        <record id="bottom_braket_master_action" model="ir.actions.act_window">
+            <field name="name">Bottom Braket Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bottom.braket.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bottom_braket_master_tree_view"/>
+        </record>
+        <menuitem action="bottom_braket_master_action" id="menu_bottom_braket_master" parent="base.menu_base_config"/>
+    </data>
+</openerp>

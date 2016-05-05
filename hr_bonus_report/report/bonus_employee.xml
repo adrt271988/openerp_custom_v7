@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<openerp>
+	<data noupdate="1">
+		<record id="ir_actions_report_xml_bonus_employee" model="ir.actions.report.xml">
+			<field eval="[(6,0,[])]" name="groups_id"/>
+			<field eval="80" name="deferred_limit"/>
+			<field eval="0" name="report_wizard"/>
+			<field eval="1" name="header"/>
+			<field name="tml_source">file</field>
+			<field name="report_type">aeroo</field>
+			<field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>
+			<field name="deferred">off</field>
+			<field name="charset">utf_8</field>
+			<field eval="1" name="copies"/>
+			<field name="parser_def">class Parser(report_sxw.rml_parse):
+    def __init__(self, cr, uid, name, context):
+        super(Parser, self).__init__(cr, uid, name, context)
+        self.context = context
+        self.localcontext.update({})</field>
+			<field name="parser_state">loc</field>
+			<field eval="0" name="fallback_false"/>
+			<field name="type">ir.actions.report.xml</field>
+			<field name="parser_loc">hr_bonus_report/report/bonus_employee_parser.py</field>
+			<field eval="0" name="auto"/>
+			<field name="styles_mode">default</field>
+			<field eval="1" name="active"/>
+			<field eval="0" name="process_sep"/>
+			<field name="report_file">hr_bonus_report/report/bonus_employee_report.ods</field>
+			<field eval="0" name="multi"/>
+			<field name="preload_mode">static</field>
+			<field name="name">Reporte Décimos por Empleado</field>
+			<field name="report_rml">hr_bonus_report/report/bonus_employee_report.ods</field>
+			<field name="report_name">bonus_employee_report</field>
+			<field name="in_format">oo-ods</field>
+			<field eval="0" name="attachment_use"/>
+			<field eval="0" name="webkit_debug"/>
+			<field name="model">hr.payslip</field>
+			<field eval="0" name="precise_mode"/>
+		</record>
+	</data>
+</openerp>

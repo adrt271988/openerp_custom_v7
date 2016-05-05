@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <record model="ir.ui.view" id="am_product_purchase_order_form">
+            <field name="name">am.product.purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='taxes_id']" position="before">
+                    <field name="add_cost"/>
+                </xpath>
+                <xpath expr="//button[@name='button_dummy']" position="attributes">
+                    <attribute name="states">draft,approved</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

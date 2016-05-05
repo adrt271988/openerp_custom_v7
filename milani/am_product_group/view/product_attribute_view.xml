@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+       <record model="ir.ui.view" id="am_product_attribute_form">
+            <field name="name">am.product.attribute.form</field>
+            <field name="model">product.attribute</field>
+            <field name="arch" type="xml">
+                <form string="Product Groups" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="am_product_attribute_tree" model="ir.ui.view">
+            <field name="name">am.product.attribute.tree</field>
+            <field name="model">product.attribute</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product Groups">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="am_product_attribute_action" model="ir.actions.act_window">
+            <field name="name">Product Groups</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.attribute</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem action="am_product_attribute_action"
+            id="am_product_attribute_menu"
+            parent="product.prod_config_main" sequence="3"/>
+    </data>
+</openerp>

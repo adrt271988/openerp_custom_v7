@@ -1,0 +1,228 @@
+# -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
+import time
+import pytz
+from openerp import SUPERUSER_ID
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+from openerp.osv import fields, osv
+from openerp import netsvc
+from openerp import pooler
+from openerp.tools.translate import _
+import datetime
+
+class partner_brand(osv.osv):
+    _name = 'partner.brand'
+    _columns ={
+               'name': fields.char('Brand',required=True),
+               }
+class CountryState(osv.osv):
+    
+    _inherit = 'res.country.state'
+    _columns = {
+                'region_id':fields.many2one('partner.region','Region',required=True),
+                }
+    
+class partner_region(osv.osv):
+    _name = 'partner.region'
+    _columns ={
+               'name': fields.char('Region',required=True),
+               }
+
+class res_partner(osv.osv):
+    
+    _inherit = 'res.partner'
+    
+    _columns = {  
+                'region_id':fields.many2one('partner.region','Region'),              
+                'relation_name' : fields.char('Relation Name'),
+                'portal_code' : fields.char('Portal Code'),
+                'subject_type' : fields.char('Subject Type'),
+                'business_entity' : fields.char('Business Entity'),
+                'annual_revenue' : fields.float('Annual Revenue'),
+                'fiscal_id' : fields.char('Fiscal Id'),
+                'number_of_employees' : fields.float('Number Of Employees'),
+                'activity_group' : fields.char('Activity Group'),
+                'activity' : fields.char('Activity'),
+                'product_and_service' : fields.char('Product And Service'),
+                'affiliation' : fields.char('Affiliation'),
+                'affiliation_id' : fields.char('Affiliation ID'),
+                'number_of_ethletor' : fields.integer('Number Of Ethletics'),
+                'b_date' : fields.date('Foundation Year'),
+                'cat' : fields.char('CAT'),
+                'skype_id':fields.char('Skype ID :'),
+                'facebook_id':fields.char('Facebook ID :'),
+                'linked_id':fields.char('Linked ID :'),
+                'twitter_id':fields.char('Twitter ID :'),
+                'team_type':fields.boolean('Sport Asso.'),
+                'default_name':fields.boolean('Person'),
+                'competitor':fields.boolean('Competitor'),
+                'others_emp':fields.boolean('Other'),
+                'prospects':fields.boolean('Prospects'),
+                'foundation_year':fields.char('Foundation Year'),
+                'entry':fields.selection([('1','Sale-Proprietorship'),('2','Partnership'),('3','Limited Liability Company'),('4','Corporation'),('5','Non-Profit')],'Entry :',invisible=1),
+                'production':fields.boolean('Production'),
+                'import':fields.boolean('Import'),
+                'wholesale':fields.boolean('Wholesale'),
+                'retail':fields.boolean('Retail'),
+                'repair':fields.boolean('Repair'),
+                'assembly':fields.boolean('Assembly'),
+                'rent':fields.boolean('Rent'),
+                'other':fields.boolean('Other'),
+                'road':fields.boolean('Road'),
+                'mtb':fields.boolean('MTB'),
+                'city1':fields.boolean('City'),
+                'trekking':fields.boolean('Trekking'),
+                'kid':fields.boolean('Kid'),
+                'mass':fields.boolean('Mass'),
+                'electric':fields.boolean('Electric'),
+                'others':fields.boolean('Other'),
+                'mejor_bond':fields.many2many('partner.brand','partner_brand_rel','partner_id','brand_id','Major Brands'),
+                'unit_sale_m':fields.float('Unit Sales / YR'),
+                'sport':fields.selection([('cycle','Cycling'),('triathlon','Triathlon'),('othersport','Other')],'Sport',invisible=True,),
+                'created_on':fields.datetime('Created On'),
+                'modified_on':fields.datetime('Last-Modified On'),
+                'created_by':fields.many2one('res.users','Created By'),
+                'modified_by':fields.many2one('res.users','Last-Modified By'),
+                'vat': fields.char('Vat Id', size=32, help="Tax Identification Number. Check the box if this contact is subjected to taxes. Used by the some of the legal statements."),
+                }
+    _defaults = {
+                    'prospects': True,                  
+                    'default_name': True,
+                    'customer': False,
+                }
+    def get_select(self, cr, uid, ids,is_company, team_type, default_name,context=None):
+
+        val = {}
+        if is_company == True:
+            val = {
+                      'default_name' : False,
+                      'team_type': False,
+                      'entry' : 'Select',
+                     
+                      
+                     }
+            return {'value' : val}
+        
+        elif team_type == True :                
+            val = {
+                      'is_company' : False,
+                      'default_name' : False,
+                      'entry' : '5',
+                      'sport' : 'Select',
+                      
+                     }            
+            return {'value' : val}
+        
+        elif team_type == False and is_company == False:
+            val = {
+                      'default_name' : True,
+                        
+                    }
+            return {'value' : val}
+        return True
+    
+    def get_select1(self, cr, uid, ids,is_company, team_type, default_name,context=None):
+        
+        val = {}
+        if team_type == True:
+            val = {
+                      'is_company' : False,
+                      'default_name' : False,
+                      'entry' : '5',
+                      'team_type': True,
+                       
+                   }
+            return {'value' : val}
+        
+        elif is_company == True :                
+            val = {
+                      'is_company' : True,
+                      'default_name' : False,
+                      'team_type': False,
+                      'entry' : 'Select',
+                      'sport' : 'Select',
+                      
+                     }            
+            return {'value' : val}
+        
+        elif team_type == False and is_company == False:
+            val = {
+                      'default_name' : True, 
+                       
+                    }
+            return {'value' : val}
+        return True
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        result = super(res_partner,self).write(cr, uid, ids, vals, context=context)
+        
+        
+        for partner in self.browse(cr, uid, ids, context=context):
+            self._fields_sync(cr, uid, partner, vals, context)
+            
+        date = datetime.datetime.now()
+        
+        if ids:
+            cr.execute(""" update res_partner set modified_on=%s,modified_by=%s where id=%s""",(date,uid,ids[0],))
+        
+        return result
+
+    def create(self, cr, uid, vals, context=None):
+        new_id = super(res_partner, self).create(cr, uid, vals, context=context)
+        partner = self.browse(cr, uid, new_id, context=context)
+        self._fields_sync(cr, uid, partner, vals, context)
+        self._handle_first_contact_creation(cr, uid, partner, context)
+        
+        date = datetime.datetime.now()
+        cr.execute(""" update res_partner set created_on=%s,modified_on=%s,created_by=%s,modified_by=%s where id=%s""",(date,date,uid,uid,new_id,))
+        return new_id
+    
+class sale_order(osv.osv):
+    
+    _inherit = 'sale.order'    
+    
+    _columns={
+              }
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('name','/')=='/':
+            vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'sale.order') or '/'
+            m=super(sale_order, self).create(cr, uid, vals, context=context)
+            
+            cr.execute(""" select partner_id from sale_order where id=%s""",(m,))
+            partner_id = cr.fetchall()
+           
+            cr.execute(""" update res_partner set customer='true',prospects='false' where id=%s""",(partner_id[0][0],))
+        return m#super(sale_order, self).create(cr, uid, vals, context=context)
+
+class purchase_order(osv.osv):
+    
+    _inherit = 'purchase.order'    
+    
+    _columns={
+              }
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('name','/')=='/':
+            vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'purchase.order') or '/'
+            order =  super(purchase_order, self).create(cr, uid, vals, context=context)
+            cr.execute(""" select partner_id from purchase_order where id=%s""",(order,))
+            partner_id = cr.fetchall()
+            cr.execute(""" update res_partner set supplier='true',prospects='false' where id=%s""",(partner_id[0][0],))
+        return order
+    
+class res_partner_title(osv.osv):
+    
+    _inherit = 'res.partner.title'
+    
+    _columns = {
+                    'code_person': fields.boolean('Person'),
+                    'code_company': fields.boolean('Company'),
+                    'code_sport': fields.boolean('Sport'),                    
+                }
+#     _defaults = {
+#         'domain': 'contact',
+#     }
