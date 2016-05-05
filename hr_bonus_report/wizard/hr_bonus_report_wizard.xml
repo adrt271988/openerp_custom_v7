@@ -7,23 +7,18 @@
 			<field name="model">hr.bonus.report.wizard</field>
 			<field name="">form</field>
 			<field name="arch" type="xml">
-				<form string="Reporte de Decimos" version="7.0">
+				<form string="Reporte de Décimos" version="7.0">
 					<group string="Configuración">
 						<field name="report_type" class="oe_inline"/>
-						<field name="bonus_type" class="oe_inline"/>
 					</group>
-					<group attrs="{'invisible':[('report_type', '!=', 'period')]}" string="Décimos por Período">
+					<group>
 						<label string="Este asistente crea un reporte de los décimos acumulados por período" colspan="4"/>
-						<field name="period_id" class="oe_inline" />
-					</group>
-					<group attrs="{'invisible':[('report_type', '!=', 'employee')]}" string="Décimos por Empleado">
-                        <label string="Este asistente crea un reporte de décimos acumulados por empleados"/>
                         <group colspan="4">
-                            <field name="date_from" attrs="{'required':[('report_type', '!=', 'period')]}"/>
-                            <field name="date_to" attrs="{'required':[('report_type', '!=', 'period')]}"/>
+                            <field name="from_period" class="oe_inline" domain="[('id','!=',to_period)]" required="1"/>
+                            <field name="to_period" class="oe_inline" domain="[('id','!=',from_period)]" required="1"/>
                         </group>
                         <group string="Empleados" colspan="4">
-                            <field nolabel="1" name="employee_ids" widget="many2many" attrs="{'required':[('report_type', '!=', 'period')]}"/>
+                            <field nolabel="1" name="employee_ids" widget="many2many"/>
                         </group>
 					</group>
 					<footer>

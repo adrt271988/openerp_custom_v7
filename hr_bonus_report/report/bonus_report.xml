@@ -20,17 +20,17 @@
 			<field name="parser_state">loc</field>
 			<field eval="0" name="fallback_false"/>
 			<field name="type">ir.actions.report.xml</field>
-			<field name="parser_loc">hr_bonus_report/report/bonus_employee_parser.py</field>
+			<field name="parser_loc">hr_bonus_report/report/bonus_parser.py</field>
 			<field eval="0" name="auto"/>
 			<field name="styles_mode">default</field>
 			<field eval="1" name="active"/>
 			<field eval="0" name="process_sep"/>
-			<field name="report_file">hr_bonus_report/report/bonus_employee_report.ods</field>
+			<field name="report_file">hr_bonus_report/report/bonus_report.ods</field>
 			<field eval="0" name="multi"/>
 			<field name="preload_mode">static</field>
 			<field name="name">Reporte Décimos por Empleado</field>
-			<field name="report_rml">hr_bonus_report/report/bonus_employee_report.ods</field>
-			<field name="report_name">bonus_employee_report</field>
+			<field name="report_rml">hr_bonus_report/report/bonus_report.ods</field>
+			<field name="report_name">bonus_report</field>
 			<field name="in_format">oo-ods</field>
 			<field eval="0" name="attachment_use"/>
 			<field eval="0" name="webkit_debug"/>

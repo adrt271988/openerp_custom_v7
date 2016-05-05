@@ -11,15 +11,13 @@ Caracteríscas Principales:
 --------------------------
     * Reporte de Décimos Terceros y Cuartos de los empleados
     * Filtros por periodo
-    * Formato de Reporte: Excel (.xls)
+    * Formato de Reporte: Hoja de Cálculo (.xls, .ods)
     """,
     'author': 'Alexander Rodriguez <adrt271988@gmail.com>',
     "depends": ['ecua_hr'],
-    #~ "data": [
-        #~ 'wizard/hr_bonus_report_wizard.xml',
-    #~ ],
     "update_xml": [
         'wizard/hr_bonus_report_wizard.xml',
+        'report/bonus_report.xml',
     ],
     'installable': True,
     "active": False,
