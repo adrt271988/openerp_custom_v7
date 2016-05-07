@@ -47,7 +47,7 @@ class HrBonusReporWizard(osv.osv_memory):
             'to_period': wizard.to_period.id,
             'date_from': date_from,
             'date_to': date_to,
-            'report_type': wizard.report_type,
+            'report_type': report_type,
         }
         print paysplip_ids
         return True
@@ -56,7 +56,8 @@ class HrBonusReporWizard(osv.osv_memory):
             #~ 'context': context,
             #~ 'report_name': 'bonus_period_report',
             #~ 'datas': {
-                #~ 'ids': paysplip_ids
+                #~ 'ids': paysplip_ids,
+                #~ 'res' : res
             #~ }
         #~ }
 
