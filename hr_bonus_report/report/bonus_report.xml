@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <openerp>
 	<data noupdate="1">
-		<record id="ir_actions_report_xml_bonus_employee" model="ir.actions.report.xml">
+		<record id="ir_actions_report_xml_bonus" model="ir.actions.report.xml">
 			<field eval="[(6,0,[])]" name="groups_id"/>
 			<field eval="80" name="deferred_limit"/>
 			<field eval="0" name="report_wizard"/>
@@ -28,7 +28,7 @@
 			<field name="report_file">hr_bonus_report/report/bonus_report.ods</field>
 			<field eval="0" name="multi"/>
 			<field name="preload_mode">static</field>
-			<field name="name">Reporte Décimos por Empleado</field>
+			<field name="name">Reporte Décimos</field>
 			<field name="report_rml">hr_bonus_report/report/bonus_report.ods</field>
 			<field name="report_name">bonus_report</field>
 			<field name="in_format">oo-ods</field>

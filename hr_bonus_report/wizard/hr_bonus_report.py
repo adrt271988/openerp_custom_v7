@@ -14,52 +14,56 @@ class HrBonusReporWizard(osv.osv_memory):
         date_from = wizard.from_period.date_start
         date_to = wizard.to_period.date_stop
         report_type = wizard.report_type
+        payslip_ids = []
         employee_ids = [employee.id for employee in wizard.employee_ids]
-        clause1 = employee_ids and "employee_id in %s AND"%tuple(employee_ids) or ""
-        clause2 = report_type == "all" and "pline.code in ('PROV DTERCERO','PROV DCUARTO')" or "pline.code = '%s'"%report_type
-        cr.execute(""" SELECT pay.employee_id,em.name_related,em.gender,em.identification_id,
-                            job.name AS job_name,SUM(pline.amount) as acum FROM hr_payslip AS pay
-                        JOIN hr_employee AS em ON em.id = pay.employee_id
-                        LEFT JOIN hr_job AS job ON job.id = em.job_id
-                        JOIN hr_payslip_line AS pline ON pline.slip_id = pay.id
-                        WHERE %s pay.date_to BETWEEN '%s' AND '%s'AND %s
-                        GROUP BY pay.employee_id,em.name_related,em.gender,em.identification_id,job_name
-                        ORDER BY em.name_related"""%(clause1,date_from,date_to,clause2))
-        res = cr.dictfetchall()
-        print '******',res
+        #~ clause1 = employee_ids and "pay.employee_id in %s AND",(tuple(employee_ids),) or ""
+        #~ clause2 = report_type == "all" and "pline.code in ('PROV DTERCERO','PROV DCUARTO')" or "pline.code = '%s'"%report_type
+        #~ cr.execute(""" SELECT pay.id FROM hr_payslip AS pay
+                        #~ JOIN hr_employee AS em ON em.id = pay.employee_id
+                        #~ JOIN hr_payslip_line AS pline ON pline.slip_id = pay.id
+                        #~ WHERE %s pay.date_to BETWEEN '%s' AND '%s' AND %s
+                        #~ GROUP BY pay.id,em.name_related
+                        #~ ORDER BY em.name_related"""%(clause1,date_from,date_to,clause2))
+        #~ print """ SELECT pay.id FROM hr_payslip AS pay
+                        #~ JOIN hr_employee AS em ON em.id = pay.employee_id
+                        #~ JOIN hr_payslip_line AS pline ON pline.slip_id = pay.id
+                        #~ WHERE %s pay.date_to BETWEEN '%s' AND '%s' AND %s
+                        #~ GROUP BY pay.id,em.name_related
+                        #~ ORDER BY em.name_related"""%(clause1,date_from,date_to,clause2)
+        #~ res = cr.dictfetchall()
+        #~ 
+        #~ print '******',res
         if employee_ids:
-            paysplip_ids = self.pool.get('hr.payslip').search(cr, uid, [
+            payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [
                 ('employee_id', 'in', employee_ids),
                 ('state', 'not in', ['draft']),
                 ('date_to', '>=', date_from),
                 ('date_to', '<=', date_to),
             ], order='employee_id,period_id', context=context)
         else:
-            paysplip_ids = self.pool.get('hr.payslip').search(cr, uid, [
+            payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [
                 ('state', 'not in', ['draft']),
                 ('date_to', '>=', date_from),
                 ('date_to', '<=', date_to),
-            ], order='period_id', context=context)
-        if not paysplip_ids:
+            ], context=context)
+        if not payslip_ids:
             raise orm.except_orm("Informacion", "No se encontraron nominas para los valores seleccionados")
         context = {
-            'from_period': wizard.from_period.id,
-            'to_period': wizard.to_period.id,
+            'from_period': wizard.from_period.name,
+            'to_period': wizard.to_period.name,
             'date_from': date_from,
             'date_to': date_to,
             'report_type': report_type,
+            'payslips': payslip_ids
         }
-        print paysplip_ids
-        return True
-        #~ return {
-            #~ 'type': 'ir.actions.report.xml',
-            #~ 'context': context,
-            #~ 'report_name': 'bonus_period_report',
-            #~ 'datas': {
-                #~ 'ids': paysplip_ids,
-                #~ 'res' : res
-            #~ }
-        #~ }
+        return {
+            'type': 'ir.actions.report.xml',
+            'context': context,
+            'report_name': 'bonus_report',
+            'datas': {
+                'ids': payslip_ids
+            }
+        }
 
     _columns = {
         'period_id': fields.many2one("account.period", string="Periodo"),
