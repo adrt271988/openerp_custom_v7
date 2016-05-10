@@ -14,11 +14,21 @@ class Parser(report_sxw.rml_parse):
             'get_period_from': self.get_period_from,
             'get_period_to': self.get_period_to,
             'get_now': self.get_now,
+            'get_type': self.get_type,
             'cr': cr,
             'uid': uid,
             'g_context': context,
         })
 
+    def get_type(self):
+        report_type = self.localcontext['report_type']
+        if report_type == 'PROV DTERCERO':
+            return u'DÉCIMOS TERCEROS'
+        elif report_type == 'PROV DCUARTO':
+            return u'DÉCIMOS CUARTO'
+        else:
+            return u'DÉCIMOS'
+        
     def get_now(self):
         return time.strftime("%Y-%m-%d")
 
@@ -37,6 +47,12 @@ class Parser(report_sxw.rml_parse):
     def get_gender(self, gender):
         if gender:
             return gender == 'male' and 'MASCULINO' or 'FEMENINO'
+        return ""
+
+    def get_sectorial_code(self, contract):
+        if contract:
+            if contract.codigo_sectorial:
+                return contract.codigo_sectorial.codigo
         return ""
 
     def get_sum_startswith(self, start_text, category_list):
@@ -59,8 +75,8 @@ class Parser(report_sxw.rml_parse):
                 employee_benefits[payslip.employee_id.id]['name'] = payslip.employee_id.name
                 employee_benefits[payslip.employee_id.id]['cedula'] = payslip.employee_id.identification_id
                 employee_benefits[payslip.employee_id.id]['gender'] = self.get_gender(payslip.employee_id.gender)
-                employee_benefits[payslip.employee_id.id]['job'] = payslip.employee_id.job_id.name
-                employee_benefits[payslip.employee_id.id]['sectorial_code'] = payslip.employee_id.contract_id.codigo_sectorial.codigo
+                employee_benefits[payslip.employee_id.id]['job'] = payslip.employee_id.job_id and payslip.employee_id.job_id or ""
+                employee_benefits[payslip.employee_id.id]['sectorial_code'] = self.get_sectorial_code(payslip.employee_id.contract_id)
                 
                 for d in self.DAYS:
                     employee_benefits[payslip.employee_id.id]['DIAS_TRABAJADOS'] = 0.00
