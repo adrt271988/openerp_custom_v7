@@ -64,20 +64,4 @@ class HrBonusReporWizard(osv.osv_memory):
         'report_type': 'third',
     }
 
-    def _check_date(self, cr, uid, ids):
-        for payroll_employee in self.browse(cr, uid, ids):
-            date_from = payroll_employee.date_from
-            date_to = payroll_employee.date_to
-            if date_from and date_to:
-                DATETIME_FORMAT = "%Y-%m-%d"
-                dt_from = datetime.datetime.strptime(date_from, DATETIME_FORMAT)
-                dt_to = datetime.datetime.strptime(date_to, DATETIME_FORMAT)
-                if dt_to < dt_from:
-                    return False
-        return True
-
-    #~ _constraints = [
-        #~ (_check_date, "La fecha de inicio debe ser mayor que la fecha fin", ['date_from','date_to']),
-    #~ ]
-
 HrBonusReporWizard()

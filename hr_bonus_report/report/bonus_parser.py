@@ -14,6 +14,7 @@ class Parser(report_sxw.rml_parse):
             'get_period_from': self.get_period_from,
             'get_period_to': self.get_period_to,
             'get_now': self.get_now,
+            'get_ruc': self.get_ruc,
             'get_type': self.get_type,
             'cr': cr,
             'uid': uid,
@@ -28,6 +29,12 @@ class Parser(report_sxw.rml_parse):
             return u'DÉCIMOS CUARTOS'
         else:
             return u'DÉCIMOS'
+        
+    def get_ruc(self):
+        user = self.pool.get('res.users').browse(self.cr, self.uid, self.uid)
+        if user.company_id.vat:
+            return user.company_id.vat[2:]
+        return ""
         
     def get_now(self):
         return time.strftime("%Y-%m-%d")
@@ -72,6 +79,7 @@ class Parser(report_sxw.rml_parse):
         for payslip in payslips:
             if payslip.employee_id.id not in employee_benefits:
                 employee_benefits[payslip.employee_id.id] = {}
+                employee_benefits[payslip.employee_id.id]['period'] = payslip.period_id.name
                 employee_benefits[payslip.employee_id.id]['name'] = payslip.employee_id.name
                 employee_benefits[payslip.employee_id.id]['cedula'] = payslip.employee_id.identification_id
                 employee_benefits[payslip.employee_id.id]['gender'] = self.get_gender(payslip.employee_id.gender)
