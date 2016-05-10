@@ -25,7 +25,7 @@ class Parser(report_sxw.rml_parse):
         if report_type == 'PROV DTERCERO':
             return u'DÉCIMOS TERCEROS'
         elif report_type == 'PROV DCUARTO':
-            return u'DÉCIMOS CUARTO'
+            return u'DÉCIMOS CUARTOS'
         else:
             return u'DÉCIMOS'
         

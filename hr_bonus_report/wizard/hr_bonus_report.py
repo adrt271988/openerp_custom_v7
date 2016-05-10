@@ -11,6 +11,11 @@ class HrBonusReporWizard(osv.osv_memory):
         date_from = wizard.from_period.date_start
         date_to = wizard.to_period.date_stop
         report_type = wizard.report_type
+        report_name = "bonus_report"
+        if report_type == 'PROV DTERCERO':
+            report_name = "bonus_tercero_report"
+        elif report_type == 'PROV DCUARTO':
+            report_name = "bonus_cuarto_report"
         payslip_ids = []
         employee_ids = [employee.id for employee in wizard.employee_ids]
         if employee_ids:
@@ -39,7 +44,7 @@ class HrBonusReporWizard(osv.osv_memory):
         return {
             'type': 'ir.actions.report.xml',
             'context': context,
-            'report_name': 'bonus_report',
+            'report_name': report_name,
             'datas': {
                 'ids': payslip_ids
             }
