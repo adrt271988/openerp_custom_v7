@@ -16,6 +16,7 @@ Caracteríscas Principales:
     'author': 'Alexander Rodriguez <adrt271988@gmail.com>',
     "depends": ['ecua_hr'],
     "update_xml": [
+        'view/hr_employee_view.xml',
         'wizard/hr_bonus_report_wizard.xml',
         'report/bonus_report.xml',
     ],

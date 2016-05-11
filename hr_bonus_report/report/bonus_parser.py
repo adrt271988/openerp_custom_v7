@@ -82,7 +82,7 @@ class Parser(report_sxw.rml_parse):
                 employee_benefits[payslip.employee_id.id]['period'] = payslip.period_id.name
                 employee_benefits[payslip.employee_id.id]['name'] = payslip.employee_id.name
                 employee_benefits[payslip.employee_id.id]['cedula'] = payslip.employee_id.identification_id
-                employee_benefits[payslip.employee_id.id]['gender'] = self.get_gender(payslip.employee_id.gender)
+                employee_benefits[payslip.employee_id.id]['gender'] = self.get_gender(payslip.employee_id.sex_gender)
                 employee_benefits[payslip.employee_id.id]['job'] = payslip.employee_id.job_id and payslip.employee_id.job_id or ""
                 employee_benefits[payslip.employee_id.id]['sectorial_code'] = self.get_sectorial_code(payslip.employee_id.contract_id)
                 
@@ -95,11 +95,11 @@ class Parser(report_sxw.rml_parse):
         for payslip in payslips:
             if report_type in ['all','PROV DCUARTO']:
                 employee_benefits[payslip.employee_id.id]['decimo_cuarto'] += self.get_sum_startswith(
-                    self.DTERCERO, payslip.details_by_salary_rule_category
+                    self.DCUARTO, payslip.details_by_salary_rule_category
                 )
             if report_type in ['all','PROV DTERCERO']:
                 employee_benefits[payslip.employee_id.id]['decimo_tercero'] += self.get_sum_startswith(
-                    self.DCUARTO, payslip.details_by_salary_rule_category
+                    self.DTERCERO, payslip.details_by_salary_rule_category
                 )
 
             for day in self.DAYS:
