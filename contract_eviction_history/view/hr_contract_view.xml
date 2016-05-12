@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="eviction_hr_contract_view_form_improvements" model="ir.ui.view">
+			<field name="name">eviction.hr.contract.view.form.improvements</field>
+			<field name="model">hr.contract</field>
+			<field name="inherit_id" ref="ecua_hr.hr_contract_view_form_improvements"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='validate_f']" position="after">
+                    <field name="contract_history"/>
+                </xpath>
+			</field>
+		</record>
+	</data>
+</openerp>
