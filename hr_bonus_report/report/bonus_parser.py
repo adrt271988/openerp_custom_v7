@@ -53,7 +53,7 @@ class Parser(report_sxw.rml_parse):
 
     def get_gender(self, gender):
         if gender:
-            return gender == 'male' and 'MASCULINO' or 'FEMENINO'
+            return gender == 'male' and 'M' or 'F'
         return ""
 
     def get_sectorial_code(self, contract):

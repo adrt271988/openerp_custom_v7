@@ -1,7 +1,7 @@
 *Agregar este fragmento de código en el campo Condición Python de Regla Salarial correspondiente*
 
 if contract.validate_f==True:
-    if contract.contract_history == True:
-        result = payslip.time_in &gt;= 1
+    if contract.contract_history == True or payslip.time_in &gt;= 1:
+        result = True
 else:
     result=True

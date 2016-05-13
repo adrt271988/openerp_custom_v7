@@ -22,7 +22,7 @@ def _generate(state):
     if state is True:
         rule_codes = ['PROV FOND RESERV','PROV FOND RESERV RE','PROV FOND RESERV RE1']
         
-        python_condition = "if contract.validate_f==True:\n\tif contract.contract_history == True:\n\t\tresult = payslip.time_in >= 1\nelse:\n\tresult=True"
+        python_condition = "if contract.validate_f==True:\n\tif contract.contract_history == True or payslip.time_in >= 1:\n\t\tresult = True\nelse:\n\tresult=True"
         for code in rule_codes:
             rule_id = object_proxy.execute(DB,uid,PASS,'hr.salary.rule','search',[('code','=',code)])
             if rule_id:

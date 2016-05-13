@@ -7,7 +7,7 @@ class InheritHrEmployee(osv.osv):
     _inherit = 'hr.employee'
 
     _columns = {
-        'sex_gender': fields.selection([('male', "Masculino"),('female', "Femenino")], string="Género"),
+        'sex_gender': fields.selection([('male', "M"),('female', "F")], string="Género"),
     }
 
 InheritHrEmployee()
