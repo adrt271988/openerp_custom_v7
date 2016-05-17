@@ -21,6 +21,11 @@ class Parser(report_sxw.rml_parse):
             'g_context': context,
         })
 
+    def get_identification(self, id_number):
+        if id_number:
+            return id_number
+        return "00"
+
     def get_type(self):
         report_type = self.localcontext['report_type']
         if report_type == 'PROV DTERCERO':
@@ -81,7 +86,7 @@ class Parser(report_sxw.rml_parse):
                 employee_benefits[payslip.employee_id.id] = {}
                 employee_benefits[payslip.employee_id.id]['period'] = payslip.period_id.name
                 employee_benefits[payslip.employee_id.id]['name'] = payslip.employee_id.name
-                employee_benefits[payslip.employee_id.id]['cedula'] = payslip.employee_id.identification_id
+                employee_benefits[payslip.employee_id.id]['cedula'] = self.get_identification(payslip.employee_id.identification_id)
                 employee_benefits[payslip.employee_id.id]['gender'] = self.get_gender(payslip.employee_id.sex_gender)
                 employee_benefits[payslip.employee_id.id]['job'] = payslip.employee_id.job_id and payslip.employee_id.job_id or ""
                 employee_benefits[payslip.employee_id.id]['sectorial_code'] = self.get_sectorial_code(payslip.employee_id.contract_id)
