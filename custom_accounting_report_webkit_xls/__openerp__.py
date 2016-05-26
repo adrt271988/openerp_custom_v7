@@ -32,7 +32,7 @@
     'demo_xml': [],
     'init_xml': [],
     'update_xml' : [
-        #~ 'wizard/trial_balance_wizard_view.xml',
+        'wizard/account_financial_report_view.xml',
     ],
     'active': False,
     'installable': True,

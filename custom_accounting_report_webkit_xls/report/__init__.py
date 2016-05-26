@@ -3,8 +3,6 @@
 #
 #    OpenERP, Open Source Management Solution
 #
-#    Copyright (c) 2013 Noviat nv/sa (www.noviat.com). All rights reserved.
-#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
@@ -20,6 +18,6 @@
 #
 ##############################################################################
 
-#~ import trial_balance_xls
+import account_financial_xls
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
