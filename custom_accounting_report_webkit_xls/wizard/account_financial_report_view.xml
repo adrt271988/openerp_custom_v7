@@ -2,14 +2,15 @@
 <openerp>
   <data>
     
+<!--
     <record id="accounting_financial_report_xls_view" model="ir.ui.view">
       <field name="name">trial.balance.webkit.xls</field>
-      <field name="model">accounting.report</field>
+      <field name="model">accounting.report.xls</field>
       <field name="type">form</field>
       <field name="inherit_id" ref="account.accounting_report_view"/>
       <field name="arch" type="xml">
         <data>
-          <xpath expr="/form/label[contains(@string,'generate a pdf')]" position="replace">
+          <xpath expr="/form/label[@string='']" position="replace">
             <label nolabel="1" colspan="4" string="This report allows you to generate a pdf or xls of your trial balance allowing you to quickly check the balance of each of your accounts in a single report"/>
           </xpath>
           <xpath expr="/form/group[@col='4']" position='attributes'>
@@ -21,6 +22,45 @@
         </data>
       </field>
     </record>
+-->
 
+    <record id="accounting_financial_report_xls_view" model="ir.ui.view">
+        <field name="name">accounting.financial.report.xls.view</field>
+        <field name="model">accounting.report.xls</field>
+        <field name="inherit_id" ref="account.accounting_report_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/label[@string='']" position="replace">
+              <label nolabel="1" colspan="4" string="This report allows you to generate a pdf or xls of your trial balance allowing you to quickly check the balance of each of your accounts in a single report"/>
+            </xpath>
+            <xpath expr="//field[@name='target_move']" position="after">
+                <field name="account_report_id" domain="[('parent_id','=',False)]"/>
+                <field name="enable_filter"/>
+                <field name="debit_credit" attrs="{'invisible': [('enable_filter','=',True)]}"/>
+            </xpath>
+            <xpath expr="//notebook/page[@string='Filters']" position="after">
+                <page string="Comparison" attrs="{'invisible': [('enable_filter','=',False)]}">
+                    <group>
+                        <field name="label_filter" attrs="{'required': [('enable_filter', '=', True)]}"/>
+                        <field name="fiscalyear_id_cmp"/><newline/>
+                        <field name="filter_cmp"/>
+                    </group>
+                    <group string="Dates" attrs="{'invisible':[('filter_cmp', '!=', 'filter_date')]}">
+                        <field name="date_from_cmp" attrs="{'required':[('filter_cmp', '=', 'filter_date')]}"/>
+                        <field name="date_to_cmp" attrs="{'required':[('filter_cmp', '=', 'filter_date')]}"/>
+                    </group>
+                    <group string="Periods" attrs="{'invisible':[('filter_cmp', '!=', 'filter_period')]}">
+                        <field name="period_from_cmp" domain="[('fiscalyear_id', '=', fiscalyear_id_cmp)]" attrs="{'required':[('filter_cmp', '=', 'filter_period')]}"/>
+                        <field name="period_to_cmp" domain="[('fiscalyear_id', '=', fiscalyear_id_cmp)]" attrs="{'required':[('filter_cmp', '=', 'filter_period')]}"/>
+                    </group>
+               </page>
+            </xpath>
+            <xpath expr="//notebook/page[@string='Journals']" position="replace">
+            </xpath>
+            <button string="Print" position="after">
+              <button icon="gtk-execute" name="xls_export" string="Export" type="object" context="{'xls_export':1}" colspan="2"/>
+            </button>
+        </field>
+    </record>
+    
   </data>
 </openerp>
