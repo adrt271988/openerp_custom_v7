@@ -24,23 +24,80 @@ from report import report_sxw
 from report_xls.report_xls import report_xls
 from report_xls.utils import rowcol_to_cell
 #~ from account_financial_report_webkit.report.trial_balance import TrialBalanceWebkit
-#~ from .common_balance_reports import CommonBalanceReportHeaderWebkit
-#~ from .webkit_parser_header_fix import HeaderFooterTextWebKitParser
+from account_financial_report_webkit.report.common_balance_reports import CommonBalanceReportHeaderWebkit
+from account_financial_report_webkit.report.webkit_parser_header_fix import HeaderFooterTextWebKitParser
 from tools.translate import _
 import logging
 _logger = logging.getLogger(__name__)
+
+from datetime import datetime
+from openerp import pooler
+
+def sign(number):
+    return cmp(number, 0)
+
+
+class BalanceSheetWebkit(report_sxw.rml_parse, CommonBalanceReportHeaderWebkit):
+
+    def __init__(self, cursor, uid, name, context):
+        super(BalanceSheetWebkit, self).__init__(cursor, uid, name, context=context)
+        self.pool = pooler.get_pool(self.cr.dbname)
+        self.cursor = self.cr
+
+        company = self.pool.get('res.users').browse(self.cr, uid, uid, context=context).company_id
+        header_report_name = ' - '.join((_('BALANCE SHEET'), company.name, company.currency_id.name))
+
+        footer_date_time = self.formatLang(str(datetime.today()), date_time=True)
+
+        self.localcontext.update({
+            'cr': cursor,
+            'uid': uid,
+            'report_name': _('Balance Sheet'),
+            'display_account': self._get_display_account,
+            'display_account_raw': self._get_display_account_raw,
+            'filter_form': self._get_filter,
+            'target_move': self._get_target_move,
+            'display_target_move': self._get_display_target_move,
+            'accounts': self._get_accounts_br,
+            'additional_args': [
+                ('--header-font-name', 'Helvetica'),
+                ('--footer-font-name', 'Helvetica'),
+                ('--header-font-size', '10'),
+                ('--footer-font-size', '6'),
+                ('--header-left', header_report_name),
+                ('--header-spacing', '2'),
+                ('--footer-left', footer_date_time),
+                ('--footer-right', ' '.join((_('Page'), '[page]', _('of'), '[topage]'))),
+                ('--footer-line',),
+            ],
+        })
+
+    def set_context(self, objects, data, ids, report_type=None):
+        """Populate a ledger_lines attribute on each browse record that will be used
+        by mako template"""
+        objects, new_ids, context_report_values = self.compute_balance_data(data)
+
+        self.localcontext.update(context_report_values)
+
+        return super(BalanceSheetWebkit, self).set_context(objects, data, new_ids,
+                                                            report_type=report_type)
+
+#~ HeaderFooterTextWebKitParser('report.account.account_report_trial_balance_webkit',
+                             #~ 'account.account',
+                             #~ )
 
 class account_financial_xls(report_xls):
     column_sizes = [12,60,17,17,17,17,17,17]
 
     def generate_xls_report(self, _p, _xs, data, objects, wb):
-        #~ print '_p: %s\n'%_p
+        print 'self: %s\n'%self
+        print '_p: %s\n'%_p
         #~ print '_xs: %s\n'%_xs
         #~ print 'data: %s\n'%data
         #~ print 'objects: %s\n'%objects
         #~ print 'wb: %s\n'%wb
-        #~ ws = wb.add_sheet(_p.report_name[:31])
-        ws = wb.add_sheet(data['form']['account_report_id'][1])
+        ws = wb.add_sheet(_p.report_name[:31])
+        #~ ws = wb.add_sheet(data['form']['account_report_id'][1])
         ws.panes_frozen = True
         ws.remove_splits = True
         ws.portrait = 0 # Landscape
@@ -260,6 +317,8 @@ class account_financial_xls(report_xls):
             row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
             row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
 
-account_financial_xls('report.account.financial.xls', 'account.account')
+account_financial_xls('report.account.financial.xls', 'account.account',
+                             'addons/account_financial_report_webkit/report/templates/account_report_profit_loss.mako',
+                             parser=BalanceSheetWebkit)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
