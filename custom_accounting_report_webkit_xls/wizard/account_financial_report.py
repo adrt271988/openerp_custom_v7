@@ -19,10 +19,6 @@
 ##############################################################################
 
 from osv import fields, osv
-import xlwt
-from xlsxwriter.workbook import Workbook
-from cStringIO import StringIO
-import base64
 #import logging
 #_logger = logging.getLogger(__name__)
 
@@ -30,26 +26,6 @@ class account_financial_report_xls(osv.osv_memory):
 
     _inherit = "accounting.report"
     _description = "Balance Sheet Report"
-
-    def print_excel_report(self, cr, uid, ids, context=None):
-        filename= 'detalle_cobranzas.xls'
-        workbook= xlwt.Workbook(encoding="UTF-8")
-        worksheet= workbook.add_sheet('Detalle de cobranzas')
-        style = xlwt.easyxf('font:height 400, bold True, name Arial; align: horiz center, vert center;borders: top medium,right medium,bottom medium,left medium')
-        worksheet.write_merge(0,1,0,7,'REPORT IN EXCEL',style)
-        fp = StringIO()
-        workbook.save(fp)
-        #~ export_id = self.pool.get('excel.extended').create(cr, uid, {'excel_file': base64.encodestring(fp.getvalue()), 'file_name': filename}, context=context)
-        fp.close()
-        return{
-            'view_mode': 'form',
-            'res_id': export_id,
-            'res_model': 'account.account',
-            'view_type': 'form',
-            'type': 'ir.actions.act_window',
-            'context': context,
-            'target': 'new',
-        }
        
     def xls_export(self, cr, uid, ids, context=None):
         res = self.check_report(cr, uid, ids, context=context)
@@ -58,14 +34,13 @@ class account_financial_report_xls(osv.osv_memory):
     def _print_report(self, cr, uid, ids, data, context=None):
         context = context or {}
         data['form'].update(self.read(cr, uid, ids, ['date_from_cmp',  'debit_credit', 'date_to_cmp',  'fiscalyear_id_cmp', 'period_from_cmp', 'period_to_cmp',  'filter_cmp', 'account_report_id', 'enable_filter', 'label_filter','target_move'], context=context)[0])
-        print '+++++++++',data
         if context.get('xls_export'):
-            # we update form with display account value
+            #~ # we update form with display account value
             #~ data = self.pre_print_report(cr, uid, ids, data, context=context)
-            #~ return {'type': 'ir.actions.report.xml',
-                    #~ 'report_name': 'custom_accounting_report_webkit_xls.account_financial_xls',
-                    #~ 'datas': data}
-            self.print_excel_report(cr, uid, ids, context=context)
+            return {'type': 'ir.actions.report.xml',
+                    'report_name': 'account.financial.xls',
+                    'datas': data}
+            #~ self.print_excel_report(cr, uid, ids, context=context)
         else:
            return {
                 'type': 'ir.actions.report.xml',

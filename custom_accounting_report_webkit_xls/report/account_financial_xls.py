@@ -23,9 +23,9 @@ import time
 from report import report_sxw
 from report_xls.report_xls import report_xls
 from report_xls.utils import rowcol_to_cell
-from account_financial_report_webkit.report.trial_balance import TrialBalanceWebkit
-from .common_balance_reports import CommonBalanceReportHeaderWebkit
-from .webkit_parser_header_fix import HeaderFooterTextWebKitParser
+#~ from account_financial_report_webkit.report.trial_balance import TrialBalanceWebkit
+#~ from .common_balance_reports import CommonBalanceReportHeaderWebkit
+#~ from .webkit_parser_header_fix import HeaderFooterTextWebKitParser
 from tools.translate import _
 import logging
 _logger = logging.getLogger(__name__)
@@ -34,8 +34,13 @@ class account_financial_xls(report_xls):
     column_sizes = [12,60,17,17,17,17,17,17]
 
     def generate_xls_report(self, _p, _xs, data, objects, wb):
-
-        ws = wb.add_sheet(_p.report_name[:31])
+        #~ print '_p: %s\n'%_p
+        #~ print '_xs: %s\n'%_xs
+        #~ print 'data: %s\n'%data
+        #~ print 'objects: %s\n'%objects
+        #~ print 'wb: %s\n'%wb
+        #~ ws = wb.add_sheet(_p.report_name[:31])
+        ws = wb.add_sheet(data['form']['account_report_id'][1])
         ws.panes_frozen = True
         ws.remove_splits = True
         ws.portrait = 0 # Landscape
@@ -255,7 +260,6 @@ class account_financial_xls(report_xls):
             row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
             row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
 
-account_financial_xls('report.custom_accounting_report_webkit_xls.account_financial_xls', 'account.account',
-    parser=TrialBalanceWebkit)
+account_financial_xls('report.account.financial.xls', 'account.account')
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
