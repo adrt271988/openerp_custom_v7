@@ -23,7 +23,6 @@ import time
 from report import report_sxw
 from report_xls.report_xls import report_xls
 from report_xls.utils import rowcol_to_cell
-#~ from account_financial_report_webkit.report.trial_balance import TrialBalanceWebkit
 from account_financial_report_webkit.report.common_balance_reports import CommonBalanceReportHeaderWebkit
 from account_financial_report_webkit.report.webkit_parser_header_fix import HeaderFooterTextWebKitParser
 from tools.translate import _
@@ -90,14 +89,13 @@ class account_financial_xls(report_xls):
     column_sizes = [12,60,17,17,17,17,17,17]
 
     def generate_xls_report(self, _p, _xs, data, objects, wb):
-        print 'self: %s\n'%self
-        print '_p: %s\n'%_p
+        #~ print 'self: %s\n'%self
+        #~ print '_p: %s\n'%_p
         #~ print '_xs: %s\n'%_xs
         #~ print 'data: %s\n'%data
         #~ print 'objects: %s\n'%objects
         #~ print 'wb: %s\n'%wb
         ws = wb.add_sheet(_p.report_name[:31])
-        #~ ws = wb.add_sheet(data['form']['account_report_id'][1])
         ws.panes_frozen = True
         ws.remove_splits = True
         ws.portrait = 0 # Landscape
