@@ -81,6 +81,8 @@ class BalanceSheetWebkit(report_sxw.rml_parse, CommonBalanceReportHeaderWebkit):
         return super(BalanceSheetWebkit, self).set_context(objects, data, new_ids,
                                                             report_type=report_type)
 
+    
+
 #~ HeaderFooterTextWebKitParser('report.account.account_report_trial_balance_webkit',
                              #~ 'account.account',
                              #~ )
@@ -89,12 +91,6 @@ class account_financial_xls(report_xls):
     column_sizes = [12,60,17,17,17,17,17,17]
 
     def generate_xls_report(self, _p, _xs, data, objects, wb):
-        #~ print 'self: %s\n'%self
-        #~ print '_p: %s\n'%_p
-        #~ print '_xs: %s\n'%_xs
-        #~ print 'data: %s\n'%data
-        #~ print 'objects: %s\n'%objects
-        #~ print 'wb: %s\n'%wb
         ws = wb.add_sheet(_p.report_name[:31])
         ws.panes_frozen = True
         ws.remove_splits = True
@@ -102,6 +98,56 @@ class account_financial_xls(report_xls):
         ws.fit_width_to_pages = 1
         row_pos = 0
 
+        account_obj = self.pool.get('account.account')
+        currency_obj = self.pool.get('res.currency')
+        ids2 = self.pool.get('account.financial.report')._get_children_by_order(self.cr, self.uid, [data['form']['account_report_id'][0]], context=data['form']['used_context'])
+        lines = []
+        for report in self.pool.get('account.financial.report').browse(self.cr, self.uid, ids2, context=data['form']['used_context']):
+            vals = {
+                'code': '',
+                'name': report.name,
+                'balance': report.balance * report.sign or 0.0,
+                'type': 'report',
+                'level': bool(report.style_overwrite) and report.style_overwrite or report.level,
+                'account_type': report.type =='sum' and 'view' or False, #used to underline the financial report balances
+            }
+            if data['form']['debit_credit']:
+                vals['debit'] = report.debit
+                vals['credit'] = report.credit
+            if data['form']['enable_filter']:
+                vals['balance_cmp'] = self.pool.get('account.financial.report').browse(self.cr, self.uid, report.id, context=data['form']['comparison_context']).balance * report.sign or 0.0
+            lines.append(vals)
+            account_ids = []
+            if report.display_detail == 'no_detail':
+                continue
+            account_ids = account_obj.search(self.cr, self.uid, [('user_type','in', [x.id for x in report.account_type_ids])])
+            if account_ids:
+                for account in account_obj.browse(self.cr, self.uid, account_ids, context=data['form']['used_context']):
+                    if report.display_detail == 'detail_flat' and account.type == 'view':
+                        continue
+                    flag = False
+                    vals = {
+                        'name': account.name,
+                        'code': account.code,
+                        'account_id': account.id,
+                        'balance':  account.balance != 0 and account.balance * report.sign or account.balance,
+                        'type': 'account',
+                        'level': report.display_detail == 'detail_with_hierarchy' and min(account.level + 1,6) or 6, #account.level + 1
+                        'account_type': account.type,
+                    }
+
+                    if data['form']['debit_credit']:
+                        vals['debit'] = account.debit
+                        vals['credit'] = account.credit
+                    if not currency_obj.is_zero(self.cr, self.uid, account.company_id.currency_id, vals['balance']):
+                        flag = True
+                    if data['form']['enable_filter']:
+                        vals['balance_cmp'] = account_obj.browse(self.cr, self.uid, account.id, context=data['form']['comparison_context']).balance * report.sign or 0.0
+                        if not currency_obj.is_zero(self.cr, self.uid, account.company_id.currency_id, vals['balance_cmp']):
+                            flag = True
+                    if flag:
+                        lines.append(vals)
+        
         # set print header/footer
         ws.header_str = self.xls_headers['standard']
         ws.footer_str = self.xls_footers['standard']
@@ -130,10 +176,8 @@ class account_financial_xls(report_xls):
         cell_style_center = xlwt.easyxf(cell_format + _xs['center'])
         c_specs = [
             ('fy', 1, 0, 'text', _('Año Fiscal')),
-            ('af', 2, 0, 'text', _('Filtro de cuentas')),
             ('df', 1, 0, 'text', _p.filter_form(data) == 'filter_date' and _('Filtros por fecha') or _('Filtros por periodo')),
             ('tm', 2, 0, 'text',  _('Movimientos destinos'), None, cell_style_center),
-            ('ib', 1, 0, 'text',  _('Balance Inicial'), None, cell_style_center),
             ('coa', 1, 0, 'text', _('Chart of Account'), None, cell_style_center),
         ]
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
@@ -144,7 +188,6 @@ class account_financial_xls(report_xls):
         cell_style_center = xlwt.easyxf(cell_format + _xs['center'])
         c_specs = [
             ('fy', 1, 0, 'text', _p.fiscalyear.name if _p.fiscalyear else '-'),
-            ('af', 2, 0, 'text', _p.accounts(data) and ', '.join([account.code for account in _p.accounts(data)]) or _('All')),
         ]
         df = _('From') + ': '
         if _p.filter_form(data) == 'filter_date':
@@ -159,7 +202,6 @@ class account_financial_xls(report_xls):
         c_specs += [
             ('df', 1, 0, 'text', df),
             ('tm', 2, 0, 'text', _p.display_target_move(data), None, cell_style_center),
-            ('ib', 1, 0, 'text', initial_balance_text[_p.initial_balance_mode], None, cell_style_center),
             ('coa', 1, 0, 'text', _p.chart_account.name, None, cell_style_center),
         ]
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
@@ -182,7 +224,6 @@ class account_financial_xls(report_xls):
                     c_specs += [('f', 3, 0, 'text', _('Filtros por periodo') + ': ' + params['start'].name + ' - ' + params['stop'].name)]
                 else:
                     c_specs += [('f', 3, 0, 'text', _('Año Fiscal') + ': ' + params['fiscalyear'].name)]
-                c_specs += [('ib', 2, 0, 'text', _('Balance Inicial') + ': ' + initial_balance_text[params['initial_balance_mode']])]
                 row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
                 row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style_center)
 
@@ -201,30 +242,19 @@ class account_financial_xls(report_xls):
             ('code', 1, 0, 'text', _('Code')),
             ('account', account_span, 0, 'text', _('Cuenta')),
         ]
-        if _p.comparison_mode == 'no_comparison':
-            if _p.initial_balance_mode:
-                c_specs += [('init_bal', 1, 0, 'text', _('Balance Inicial'), None, cell_style_right)]
+        if data['form']['debit_credit']:
             c_specs += [
                 ('debit', 1, 0, 'text', _('Debe'), None, cell_style_right),
                 ('credit', 1, 0, 'text', _('Haber'), None, cell_style_right),
             ]
-
-        if _p.comparison_mode == 'no_comparison' or not _p.fiscalyear:
-            c_specs += [('balance', 1, 0, 'text', _('Balance'), None, cell_style_right)]
-        else:
-            c_specs += [('balance_fy', 1, 0, 'text', _('Balance %s') % _p.fiscalyear.name, None, cell_style_right)]
-        if _p.comparison_mode in ('single', 'multiple'):
-            for index in range(_p.nb_comparison):
-                if _p.comp_params[index]['comparison_filter'] == 'filter_year' and _p.comp_params[index].get('fiscalyear', False):
-                    c_specs += [('balance_%s' %index, 1, 0, 'text', _('Balance %s') % _p.comp_params[index]['fiscalyear'].name, None, cell_style_right)]
-                else:
-                    c_specs += [('balance_%s' %index, 1, 0, 'text', _('Balance C%s') % (index + 1), None, cell_style_right)]
-                if _p.comparison_mode == 'single':
-                    c_specs += [
-                        ('diff', 1, 0, 'text', _('Difference'), None, cell_style_right),
-                        ('diff_percent', 1, 0, 'text', _('% Difference'), None, cell_style_center),
-                    ]
-        c_specs += [('type', 1, 0, 'text', _('Type'), None, cell_style_center)]
+        c_specs += [
+            ('balance', 1, 0, 'text', _('Balance'), None, cell_style_right),
+        ]
+        if data['form']['enable_filter']:
+            c_specs += [
+                ('balance_cmp', 1, 0, 'text', data['form']['label_filter'], None, cell_style_right),
+            ]
+            
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
         row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
         ws.set_horz_split_pos(row_pos)
@@ -243,13 +273,11 @@ class account_financial_xls(report_xls):
         regular_cell_style_center = xlwt.easyxf(regular_cell_format + _xs['center'])
         regular_cell_style_decimal = xlwt.easyxf(regular_cell_format + _xs['right'], num_format_str = report_xls.decimal_format)
         regular_cell_style_pct = xlwt.easyxf(regular_cell_format + _xs['center'], num_format_str = '0')
-
-        for current_account in objects:
-
-            if not current_account.to_display:
+        
+        for line in lines:
+            if line['level'] == 0:
                 continue
-
-            if current_account.type == 'view':
+            if line['account_type'] == 'view' or line['type'] == 'report':
                 cell_style = view_cell_style
                 cell_style_center = view_cell_style_center
                 cell_style_decimal = view_cell_style_decimal
@@ -260,58 +288,21 @@ class account_financial_xls(report_xls):
                 cell_style_decimal = regular_cell_style_decimal
                 cell_style_pct = regular_cell_style_pct
 
-            comparisons = current_account.comparisons
-
-            if current_account.id in last_child_consol_ids:
-                # current account is a consolidation child of the last account: use the level of last account
-                level = last_level
-                level_class = 'account_level_consol'
-            else:
-                # current account is a not a consolidation child: use its own level
-                level = current_account.level or 0
-                level_class = "account_level_%s" % (level,)
-                last_child_consol_ids = [child_consol_id.id for child_consol_id in current_account.child_consol_ids]
-                last_level = current_account.level
-
             c_specs = [
-                ('code', 1, 0, 'text', current_account.code),
-                ('account', account_span, 0, 'text', current_account.name),
+                ('code', 1, 0, 'text', line['code']),
+                ('account', account_span, 0, 'text', line['name']),
             ]
-            if _p.comparison_mode == 'no_comparison':
-
-                debit_cell = rowcol_to_cell(row_pos, 4)
-                credit_cell = rowcol_to_cell(row_pos, 5)
-                bal_formula = debit_cell + '-' + credit_cell
-
-                if _p.initial_balance_mode:
-                    init_cell = rowcol_to_cell(row_pos, 3)
-                    debit_cell = rowcol_to_cell(row_pos, 4)
-                    credit_cell = rowcol_to_cell(row_pos, 5)
-                    if current_account.code[0] in ['2','3','4']:
-                       bal_formula = init_cell + '-' + debit_cell + '+' + credit_cell
-                    else:
-                       bal_formula = init_cell + '+' + debit_cell + '-' + credit_cell
-                    c_specs += [('init_bal', 1, 0, 'number', current_account.init_balance, None, cell_style_decimal)]
+            if data['form']['debit_credit']: 
                 c_specs += [
-                    ('debit', 1, 0, 'number', current_account.debit, None, cell_style_decimal),
-                    ('credit', 1, 0, 'number', current_account.credit, None, cell_style_decimal),
+                    ('debit', 1, 0, 'number', line['debit'], None, cell_style_decimal),
+                    ('credit', 1, 0, 'number', line['credit'], None, cell_style_decimal),
                 ]
-                c_specs += [('balance', 1, 0, 'number', None, bal_formula, cell_style_decimal)]
-            else:
-                c_specs += [('balance', 1, 0, 'number', current_account.balance, None, cell_style_decimal)]
+            c_specs += [('balance', 1, 0, 'number', line['balance'], None, cell_style_decimal)]
+            if data['form']['enable_filter']:
+                c_specs += [
+                    ('balance_cmp', 1, 0, 'text', str(line['balance_cmp']), None, cell_style_decimal),
+                ]
 
-            if _p.comparison_mode in ('single', 'multiple'):
-                c = 1
-                for comp_account in comparisons:
-                    c_specs += [('balance_%s' %c, 1, 0, 'number', comp_account['balance'], None, cell_style_decimal)]
-                    c += 1
-                    if _p.comparison_mode == 'single':
-                        c_specs += [
-                            ('diff', 1, 0, 'number', comp_account['diff'], None, cell_style_decimal),
-                            ('diff_percent', 1, 0, 'number', comp_account['percent_diff'] and comp_account['percent_diff'] or 0, None, cell_style_pct),
-                        ]
-
-            c_specs += [('type', 1, 0, 'text', current_account.type, None, cell_style_center)]
             row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
             row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
 
