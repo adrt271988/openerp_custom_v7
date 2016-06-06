@@ -42,16 +42,18 @@ class BalanceSheetWebkit(report_sxw.rml_parse, CommonBalanceReportHeaderWebkit):
         super(BalanceSheetWebkit, self).__init__(cursor, uid, name, context=context)
         self.pool = pooler.get_pool(self.cr.dbname)
         self.cursor = self.cr
-
+        print '******context',context
         company = self.pool.get('res.users').browse(self.cr, uid, uid, context=context).company_id
-        header_report_name = ' - '.join((_('BALANCE SHEET'), company.name, company.currency_id.name))
+        report = self.pool.get('account.financial.report').browse(self.cr, uid, context['default_account_report_id'], context = context)
+        report_name = report.name.upper()
+        header_report_name = ' - '.join((report_name, company.name, company.currency_id.name))
 
         footer_date_time = self.formatLang(str(datetime.today()), date_time=True)
 
         self.localcontext.update({
             'cr': cursor,
             'uid': uid,
-            'report_name': _('Balance Sheet'),
+            'report_name': report_name,
             'display_account': self._get_display_account,
             'display_account_raw': self._get_display_account_raw,
             'filter_form': self._get_filter,

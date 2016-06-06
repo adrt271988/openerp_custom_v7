@@ -24,7 +24,6 @@ from openerp.osv import fields, orm, osv
 
 class AccountReportBalanceSheetWizard(orm.TransientModel):
 
-    #~ _inherit = "accounting.report"
     _inherit = "account.common.account.report"
     _name = "balance.sheet.webkit"
     _description = "Balance Sheet Report"

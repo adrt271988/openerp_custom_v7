@@ -37,28 +37,7 @@
         </field>
     </record>
     
-<!--
-    <record id="accounting_report_view_inherit" model="ir.ui.view">
-      <field name="name">accounting.report.view.inherit</field>
-      <field name="model">balance.sheet.webkit</field>
-      <field name="type">form</field>
-      <field name="inherit_id" ref="account.accounting_report_view"/>
-      <field name="arch" type="xml">
-          <xpath expr="/form/label[@string='']" position="replace">
-            <label nolabel="1" colspan="4" string="This report allows you to generate a pdf or xls of your trial balance allowing you to quickly check the balance of each of your accounts in a single report"/>
-          </xpath>
-          <xpath expr="/form/group[@col='4']" position='attributes'>
-                <attribute name="col">6</attribute>
-            </xpath>
-            <button string="Print" position="after">
-                <button icon="gtk-execute" name="xls_export" string="Export" type="object" context="{'xls_export':1}" colspan="2"/>
-            </button>
-      </field>
-    </record>
--->
-
-    
-
+    <!-- Balance Sheet -->
     <record id="action_account_balance_sheet_menu_webkit" model="ir.actions.act_window">
         <field name="name">Balance Sheet</field>
         <field name="type">ir.actions.act_window</field>
@@ -82,6 +61,21 @@
     </record>
 
     <menuitem icon="STOCK_PRINT" name="Balance Sheet" action="action_account_balance_sheet_menu_webkit" id="account.menu_account_report_bs" parent="account.final_accounting_reports"/>
+
+    <!-- Profit & Loss -->
+
+    <record id="action_account_profit_loss_menu_webkit" model="ir.actions.act_window">
+         <field name="name">Profit and Loss</field>
+         <field name="res_model">balance.sheet.webkit</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="view_id" ref="account_report_balance_sheet_view_webkit"/>
+         <field name="target">new</field>
+         <field name="context">{}</field>
+         <field name="context" eval="{'default_account_report_id':ref('account.account_financial_report_profitandloss0')}"/>
+    </record>
+    <menuitem icon="STOCK_PRINT" name="Profit And Loss" action="action_account_profit_loss_menu_webkit" id="account.menu_account_report_pl" parent="account.final_accounting_reports"/>
     
   </data>
 </openerp>

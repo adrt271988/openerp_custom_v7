@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-03 18:51+0000\n"
-"PO-Revision-Date: 2016-06-03 18:51+0000\n"
+"POT-Creation-Date: 2016-06-06 21:24+0000\n"
+"PO-Revision-Date: 2016-06-06 21:24+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -146,6 +146,11 @@ msgstr "Dejar vacío para todo año fiscal abierto"
 #: field:balance.sheet.webkit,period_to_cmp:0
 msgid "End Period"
 msgstr "Periodo Final"
+
+#. module: custom_accounting_report_webkit_xls
+#: model:ir.actions.act_window,name:custom_accounting_report_webkit_xls.action_account_profit_loss_menu_webkit
+msgid "Profit and Loss"
+msgstr "Pérdidas y Ganancias"
 
 #. module: custom_accounting_report_webkit_xls
 #: field:balance.sheet.webkit,fiscalyear_id:0
