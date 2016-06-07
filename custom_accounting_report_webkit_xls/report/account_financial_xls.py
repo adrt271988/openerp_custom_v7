@@ -20,6 +20,7 @@
 
 import xlwt
 import time
+from datetime import date
 from report import report_sxw
 from report_xls.report_xls import report_xls
 from report_xls.utils import rowcol_to_cell
@@ -42,8 +43,8 @@ class BalanceSheetWebkit(report_sxw.rml_parse, CommonBalanceReportHeaderWebkit):
         super(BalanceSheetWebkit, self).__init__(cursor, uid, name, context=context)
         self.pool = pooler.get_pool(self.cr.dbname)
         self.cursor = self.cr
-        print '******context',context
-        company = self.pool.get('res.users').browse(self.cr, uid, uid, context=context).company_id
+        user_brw = self.pool.get('res.users').browse(self.cr, uid, uid, context=context)
+        company = user_brw.company_id
         report = self.pool.get('account.financial.report').browse(self.cr, uid, context['default_account_report_id'], context = context)
         report_name = report.name.upper()
         header_report_name = ' - '.join((report_name, company.name, company.currency_id.name))
@@ -53,6 +54,7 @@ class BalanceSheetWebkit(report_sxw.rml_parse, CommonBalanceReportHeaderWebkit):
         self.localcontext.update({
             'cr': cursor,
             'uid': uid,
+            'user': user_brw,
             'report_name': report_name,
             'display_account': self._get_display_account,
             'display_account_raw': self._get_display_account_raw,
@@ -162,6 +164,14 @@ class account_financial_xls(report_xls):
         report_name =  ' - '.join([_p.report_name.upper(), _p.company.partner_id.name, _p.company.currency_id.name])
         c_specs = [
             ('report_name', 1, 0, 'text', report_name),
+        ]
+        row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
+        row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
+
+        # User and Date
+        user_date = ' - '.join([_p.user.name, date.today().strftime('%d-%m-%Y')])
+        c_specs = [
+            ('user_date', 1, 0, 'text', user_date),
         ]
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
         row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
