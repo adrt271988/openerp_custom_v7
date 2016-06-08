@@ -168,14 +168,6 @@ class account_financial_xls(report_xls):
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
         row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
 
-        # User and Date
-        user_date = ' - '.join([_p.user.name, date.today().strftime('%d-%m-%Y')])
-        c_specs = [
-            ('user_date', 1, 0, 'text', user_date),
-        ]
-        row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
-        row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
-
         # write empty row to define column sizes
         c_sizes = self.column_sizes
         c_specs = [('empty%s'%i, 1, c_sizes[i], 'text', None) for i in range(0,len(c_sizes))]
@@ -190,7 +182,7 @@ class account_financial_xls(report_xls):
             ('fy', 1, 0, 'text', _('Año Fiscal')),
             ('df', 1, 0, 'text', _p.filter_form(data) == 'filter_date' and _('Filtros por fecha') or _('Filtros por periodo')),
             ('tm', 2, 0, 'text',  _('Movimientos destinos'), None, cell_style_center),
-            ('coa', 1, 0, 'text', _('Chart of Account'), None, cell_style_center),
+            ('coa', 1, 0, 'text', _('Plan de Cuentas'), None, cell_style_center),
         ]
         row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
         row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
@@ -201,12 +193,12 @@ class account_financial_xls(report_xls):
         c_specs = [
             ('fy', 1, 0, 'text', _p.fiscalyear.name if _p.fiscalyear else '-'),
         ]
-        df = _('From') + ': '
+        df = _('Desde') + ': '
         if _p.filter_form(data) == 'filter_date':
             df += _p.start_date if _p.start_date else u''
         else:
             df += _p.start_period.name if _p.start_period else u''
-        df += ' ' + _('\nTo') + ': '
+        df += ' ' + _('\nHasta') + ': '
         if _p.filter_form(data) == 'filter_date':
             df += _p.stop_date if _p.stop_date else u''
         else:
@@ -317,6 +309,28 @@ class account_financial_xls(report_xls):
 
             row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
             row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
+        
+        # User and Date
+        cell_style = xlwt.easyxf(_xs['bold'])
+        c_specs = [
+            ('blank_row', 1, 0, 'text', ''),
+        ]
+        row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
+        row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
+        
+        c_specs = [
+            ('user', 1, 0, 'text', 'Usuario: %s'%_p.user.name),
+        ]
+        row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
+        row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
+        
+        c_specs = [
+            ('date', 1, 0, 'text', 'Fecha: %s'%date.today().strftime('%d-%m-%Y')),
+        ]
+        row_data = self.xls_row_template(c_specs, [x[0] for x in c_specs])
+        row_pos = self.xls_write_row(ws, row_pos, row_data, row_style=cell_style)
+
+        
 
 account_financial_xls('report.account.financial.xls', 'account.account',
                              'addons/account_financial_report_webkit/report/templates/account_report_profit_loss.mako',

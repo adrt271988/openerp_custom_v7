@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <record model="ir.ui.view" id="account_voucher_category_tree">
+            <field name="name">account.voucher.category.tree</field>
+            <field name="model">account.voucher.category</field>
+            <field name="arch" type="xml">
+                <tree string="Categorías de Pago">
+                    <field name="name"/>
+                    <field name="type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_voucher_category_form">
+            <field name="name">account.voucher.category.form</field>
+            <field name="model">account.voucher.category</field>
+            <field name="arch" type="xml">
+                <form string="Categoría de Pago" version="7.0">
+                  <sheet>
+                    <group col="4" colspan="4">
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="parent_id"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="account_voucher_category_action" model="ir.actions.act_window">
+            <field name="name">Categorías de Pagos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.voucher.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help"></field>
+        </record>
+        
+        <menuitem name="Categorías de Pago" action="account_voucher_category_action"
+                id="account_voucher_category_menu" parent="account.menu_finance_configuration" sequence="55"/>
+        
+    </data>
+</openerp>
