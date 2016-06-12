@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="voucher_category_view_vendor_receipt">
+			<field name="name">voucher.category.view.vendor.receipt</field>
+			<field name="inherit_id" ref="electrocom_contabilidad.view_vendor_receipt_inherit_form"/>
+			<field name="model">account.voucher</field>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="voucher_category_id" domain="['|',('type','=','customer'),('type','=','both')]"/>
+				</xpath>
+			</field>
+		</record>
+        
+        <record model="ir.ui.view" id="voucher_category_vendor_payment_check">
+			<field name="name">voucher.category.vendor.payment.check</field>
+			<field name="inherit_id" ref="account_check_writing.view_vendor_payment_check_form"/>
+			<field name="model">account.voucher</field>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="voucher_category_id" domain="['|',('type','=','supplier'),('type','=','both')]"/>
+				</xpath>
+			</field>
+		</record>
+    </data>
+</openerp>

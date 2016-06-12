@@ -19,3 +19,4 @@
 ##############################################################################
 
 import account_voucher_category
+import account_voucher

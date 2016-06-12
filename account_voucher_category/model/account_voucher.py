@@ -17,23 +17,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Categorización de Pagos',
-    'version': '0.1',
-    'author': 'Alexander Rodriguez <adrt271988@gmail.com>',
-    'category': 'Accounting',
-    'description': """ 
-    Categorización de Pagos:
-        - Este módulo se encarga de agregar categorías a los pagos de clientes/proveedores
-        - Se crea un nuevo modelo configurable llamado Categorías de Pago
-    """,
-    'depends': ['electrocom_contabilidad','account_check_writing'],
-    'demo_xml': [],
-    'init_xml': [],
-    'update_xml' : [
-        'view/account_voucher_category_view.xml',
-        'view/account_voucher_view.xml',
-    ],
-    'active': False,
-    'installable': True,
-}
+
+import time
+from lxml import etree
+from openerp import netsvc
+from openerp.osv import fields, osv
+import openerp.addons.decimal_precision as dp
+from openerp.tools.translate import _
+from openerp.tools import float_compare
+
+class account_voucher(osv.osv):
+    _inherit = 'account.voucher'
+
+    _columns = {
+        'voucher_category_id': fields.many2one('account.voucher','Categoría de Pago', help="Categoría de Pago")
+    }
+
+account_voucher()
