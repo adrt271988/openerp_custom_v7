@@ -30,7 +30,7 @@ class account_voucher(osv.osv):
     _inherit = 'account.voucher'
 
     _columns = {
-        'voucher_category_id': fields.many2one('account.voucher','Categoría de Pago', help="Categoría de Pago")
+        'voucher_category_id': fields.many2one('account.voucher.category','Categoría de Pago', help="Categoría de Pago")
     }
 
 account_voucher()

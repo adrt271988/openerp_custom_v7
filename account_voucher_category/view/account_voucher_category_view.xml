@@ -9,6 +9,7 @@
                 <tree string="Categorías de Pago">
                     <field name="name"/>
                     <field name="type"/>
+                    <field name="parent_id"/>
                 </tree>
             </field>
         </record>
